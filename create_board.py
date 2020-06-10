@@ -10,13 +10,15 @@ class CreateDartboard():
     def __init__(self, url):
         self.img = mpimg.imread(url)
         self.dartboard = np.zeros(shape=self.img.shape[:2])
+        # Matrix to state whether hit the board or not
+        self.board_mask = np.ones(shape=self.img.shape[:2], dtype=bool)
         
         self.colours = {}
         # Red [1. 0. 0. 1.]
-        # Green [0. 0.627451 0.  1.]
+        # Green [0. 0.627451 0. 1.]
         # Black [0. 0. 0. 1.]
         # White [0.90588236 0.89411765 0.78039217 1.]
-        # Wire [0.9647059  0.18431373 0.2  1.] [0.8156863  0.92941177 0.99215686 1.] [0.8156863  0.92941177 0.99215686 1.] [0.5803922 0.8392157 0.7058824 1.]
+        # Wire [0.9647059 0.18431373 0.2 1.] [0.8156863 0.92941177 0.99215686 1.] [0.8156863 0.92941177 0.99215686 1.] [0.5803922 0.8392157 0.7058824 1.]
 
         self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # y, x
     
@@ -24,7 +26,7 @@ class CreateDartboard():
         # Add value of the border colour around the dartboard
         for pixel in self.img[0]:
             if pixel[0] != 0:
-                self.colours['outside_border'] = pixel[0]
+                self.colours['outside_border'] = pixel
                 break
         
         # Add bullseye colour
@@ -46,7 +48,7 @@ class CreateDartboard():
     def printBoardSection(self, centre, r):
         for i in range(centre[0]-r, centre[0]+r):
             for j in range(centre[1]-r, centre[1]+r):
-                print(str(int(self.dartboard[i][j])).ljust(1), end=' ')
+                print(str(int(self.board_mask[i][j])).ljust(1), end=' ')
             print()
 
     def allocateWire(self, point):
@@ -215,10 +217,26 @@ class CreateDartboard():
                         self.dartboard[pt[0]][pt[1]] = board_value
                         q.put((pt[0], pt[1]))
     
+    def calculateMask(self):
+        r = 0
+        for i in range(self.centre_pt[0]):
+            if (self.img[self.centre_pt[0] + i][self.centre_pt[1]] == self.colours['outside_border']).all():
+                r = i
+                break
+        
+        for i in range(self.board_mask.shape[0]):
+            for j in range(self.board_mask.shape[1]):
+                d = np.sqrt((self.centre_pt[0]-i)**2 + (self.centre_pt[1]-j)**2)
+                if d > r:
+                    self.board_mask[i][j] = False
+    
     def run(self):
         self.setColours()
         self.createBoard()
-        self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 50), 50)
+        self.calculateMask()
+        self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 450), 50)
+        
+
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
