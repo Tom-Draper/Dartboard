@@ -49,33 +49,6 @@ class CreateDartboard():
                 print(str(int(self.dartboard[i][j])).ljust(1), end=' ')
             print()
 
-    # Scans the radius around the centre_pt and adds the updates dartboard with the 
-    # board value at equivalent position where the input colour is found 
-    def addValue(self, r, colour, board_value):
-        for i in range(self.centre_pt[0] - r, self.centre_pt[0] + r):
-            for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
-                if (self.img[i][j] == colour).all():
-                    self.dartboard[i][j] = board_value
-
-    def createInnerBullseye(self):
-        # Fill the areas on the dartboard where the image is red centre with value 50 
-        self.floodFill(self.centre_pt, self.colours['red'], 50)
-    
-    def distanceCentreToColour(self, colour):
-        r = 0
-        # Add distance from centre to first green pixel 
-        while True:
-            if not (self.img[self.centre_pt[0]][self.centre_pt[1] + r] == colour).all():
-                r += 1
-            else:
-                r += 1  # Include centre
-                break
-        return r
-    
-    def createOuterBullseye(self):
-        r = 1 + self.distanceCentreToColour(self.colours['green'])
-        self.floodFill((self.centre_pt[0] + r, self.centre_pt[1]), self.colours['green'], 25)
-
     def allocateWire(self, point):
         # Copy of board to find nearest values for each point
         board = self.dartboard.copy()
@@ -244,8 +217,6 @@ class CreateDartboard():
     
     def run(self):
         self.setColours()
-        #self.createInnerBullseye()
-        #self.createOuterBullseye()
         self.createBoard()
         self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 50), 50)
 
