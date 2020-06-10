@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import queue
+from collections import namedtuple
 
 
 class CreateDartboard():
@@ -11,8 +12,12 @@ class CreateDartboard():
         self.dartboard = np.zeros(shape=self.img.shape[:2])
         
         self.colours = {}
+        # Red [1. 0. 0. 1.]
+        # Green [0. 0.627451 0.  1.]
+        # Black [0. 0. 0. 1.]
+        # White [0.90588236 0.89411765 0.78039217 1.]
+        # Wire [0.9647059  0.18431373 0.2  1.] [0.8156863  0.92941177 0.99215686 1.] [0.8156863  0.92941177 0.99215686 1.] [0.5803922 0.8392157 0.7058824 1.]
 
-        # Bullseye
         self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # x, y
     
     def setColours(self):
@@ -34,11 +39,14 @@ class CreateDartboard():
                 green_col = pixel
                 break
         self.colours['green'] = green_col
+        
+        self.colours['black'] = self.img[self.centre_pt[0]][self.centre_pt[1] + 50]
+        self.colours['white'] = self.img[self.centre_pt[0] + 50][self.centre_pt[1]]
     
     def printBoardSection(self, centre, r):
         for i in range(centre[0]-r, centre[0]+r):
             for j in range(centre[1]-r, centre[1]+r):
-                print(self.dartboard[i][j], end=' ')
+                print(int(self.dartboard[i][j]), end=' ')
             print()
 
     # Scans the radius around the centre_pt and adds the updates dartboard with the 
@@ -86,7 +94,6 @@ class CreateDartboard():
                 local = list(filter(lambda v : v != 0, local))  # Remove zeros
                 if len(local) == 1:
                     self.dartboard[point[0]][point[1]] = local[0]
-                else:
                     self.dartboard[point[0]][point[1]] = np.random.choice(local)
 
     def bullseyeWire(self):
@@ -96,6 +103,40 @@ class CreateDartboard():
             for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
                 if self.dartboard[i][j] == 0:
                     self.allocateWire(tuple((i, j)))
+    
+    def createNumbers(self):
+        Point = namedtuple('Point', 'point colour board_value')
+
+        # 20
+        twenty = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
+                  Point(point=(self.centre_pt[0] + 270, self.centre_pt[1]), colour=self.colours['red'], board_value=60),
+                  Point(point=(self.centre_pt[0] + 290, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
+                  Point(point=(self.centre_pt[0] + 440, self.centre_pt[1]), colour=self.colours['red'], board_value=40)]
+        
+        # 3
+        three = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1]), colour=self.colours['black'], board_value=3), 
+                 Point(point=(self.centre_pt[0] - 270, self.centre_pt[1]), colour=self.colours['red'], board_value=9),
+                 Point(point=(self.centre_pt[0] - 290, self.centre_pt[1]), colour=self.colours['black'], board_value=3),
+                 Point(point=(self.centre_pt[0] - 440, self.centre_pt[1]), colour=self.colours['red'], board_value=6)]
+        
+        # 6
+        six = [Point(point=(self.centre_pt[0], self.centre_pt[1] + 50), colour=self.colours['white'], board_value=6),
+               Point(point=(self.centre_pt[0], self.centre_pt[1] + 270), colour=self.colours['green'], board_value=18),
+               Point(point=(self.centre_pt[0], self.centre_pt[1] + 290), colour=self.colours['white'], board_value=6),
+               Point(point=(self.centre_pt[0], self.centre_pt[1] + 440), colour=self.colours['green'], board_value=12)]
+        
+        # 11
+        eleven = [Point(point=(self.centre_pt[0], self.centre_pt[1] - 50), colour=self.colours['white'], board_value=11),
+                  Point(point=(self.centre_pt[0], self.centre_pt[1] - 270), colour=self.colours['green'], board_value=33),
+                  Point(point=(self.centre_pt[0], self.centre_pt[1] - 290), colour=self.colours['white'], board_value=11),
+                  Point(point=(self.centre_pt[0], self.centre_pt[1] - 440), colour=self.colours['green'], board_value=22)]
+        
+        q = queue.Queue()
+        [q.put(i) for i in twenty+three+six+eleven]
+        
+        while not q.empty():
+            p = q.get()
+            self.floodFill(p.point, p.colour, p.board_value)
     
     def floodFillRecursion(self, point, colour, board_value):
         # Return if this point on image is not the target colour 
@@ -128,8 +169,8 @@ class CreateDartboard():
         self.setColours()
         self.createInnerBullseye()
         self.createOuterBullseye()
-        self.printBoardSection(self.centre_pt, 20)
         self.bullseyeWire()
+        self.createNumbers()
         self.printBoardSection(self.centre_pt, 20)
 
 
