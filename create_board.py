@@ -18,7 +18,7 @@ class CreateDartboard():
         # White [0.90588236 0.89411765 0.78039217 1.]
         # Wire [0.9647059  0.18431373 0.2  1.] [0.8156863  0.92941177 0.99215686 1.] [0.8156863  0.92941177 0.99215686 1.] [0.5803922 0.8392157 0.7058824 1.]
 
-        self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # x, y
+        self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # y, x
     
     def setColours(self):
         # Add value of the border colour around the dartboard
@@ -40,13 +40,13 @@ class CreateDartboard():
                 break
         self.colours['green'] = green_col
         
-        self.colours['black'] = self.img[self.centre_pt[0]][self.centre_pt[1] + 50]
-        self.colours['white'] = self.img[self.centre_pt[0] + 50][self.centre_pt[1]]
+        self.colours['white'] = self.img[self.centre_pt[0]][self.centre_pt[1] + 50]
+        self.colours['black'] = self.img[self.centre_pt[0] + 50][self.centre_pt[1]]
     
     def printBoardSection(self, centre, r):
         for i in range(centre[0]-r, centre[0]+r):
             for j in range(centre[1]-r, centre[1]+r):
-                print(int(self.dartboard[i][j]), end=' ')
+                print(str(int(self.dartboard[i][j])).ljust(1), end=' ')
             print()
 
     # Scans the radius around the centre_pt and adds the updates dartboard with the 
@@ -102,22 +102,22 @@ class CreateDartboard():
         for i in range(self.centre_pt[0] - r, self.centre_pt[0] + r):
             for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
                 if self.dartboard[i][j] == 0:
-                    self.allocateWire(tuple((i, j)))
+                    self.allocateWire((i, j))
     
     def createNumbers(self):
         Point = namedtuple('Point', 'point colour board_value')
 
         # 20
-        twenty = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
-                  Point(point=(self.centre_pt[0] + 270, self.centre_pt[1]), colour=self.colours['red'], board_value=60),
-                  Point(point=(self.centre_pt[0] + 290, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
-                  Point(point=(self.centre_pt[0] + 440, self.centre_pt[1]), colour=self.colours['red'], board_value=40)]
+        twenty = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
+                  Point(point=(self.centre_pt[0] - 270, self.centre_pt[1]), colour=self.colours['red'], board_value=60),
+                  Point(point=(self.centre_pt[0] - 290, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
+                  Point(point=(self.centre_pt[0] - 440, self.centre_pt[1]), colour=self.colours['red'], board_value=40)]
         
         # 3
-        three = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1]), colour=self.colours['black'], board_value=3), 
-                 Point(point=(self.centre_pt[0] - 270, self.centre_pt[1]), colour=self.colours['red'], board_value=9),
-                 Point(point=(self.centre_pt[0] - 290, self.centre_pt[1]), colour=self.colours['black'], board_value=3),
-                 Point(point=(self.centre_pt[0] - 440, self.centre_pt[1]), colour=self.colours['red'], board_value=6)]
+        three = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1]), colour=self.colours['black'], board_value=3), 
+                 Point(point=(self.centre_pt[0] + 270, self.centre_pt[1]), colour=self.colours['red'], board_value=9),
+                 Point(point=(self.centre_pt[0] + 290, self.centre_pt[1]), colour=self.colours['black'], board_value=3),
+                 Point(point=(self.centre_pt[0] + 440, self.centre_pt[1]), colour=self.colours['red'], board_value=6)]
         
         # 6
         six = [Point(point=(self.centre_pt[0], self.centre_pt[1] + 50), colour=self.colours['white'], board_value=6),
@@ -169,9 +169,9 @@ class CreateDartboard():
         self.setColours()
         self.createInnerBullseye()
         self.createOuterBullseye()
-        self.bullseyeWire()
+        #self.bullseyeWire()
         self.createNumbers()
-        self.printBoardSection(self.centre_pt, 20)
+        self.printBoardSection((self.centre_pt[0], self.centre_pt[1]+ 40), 60)
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
