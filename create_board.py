@@ -107,32 +107,52 @@ class CreateDartboard():
     def createNumbers(self):
         Point = namedtuple('Point', 'point colour board_value')
 
-        # 20
+        # Each number on the dart board:
+        # [lower value, triple, higher value, double]
         twenty = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
                   Point(point=(self.centre_pt[0] - 270, self.centre_pt[1]), colour=self.colours['red'], board_value=60),
                   Point(point=(self.centre_pt[0] - 290, self.centre_pt[1]), colour=self.colours['black'], board_value=20),
                   Point(point=(self.centre_pt[0] - 440, self.centre_pt[1]), colour=self.colours['red'], board_value=40)]
         
-        # 3
         three = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1]), colour=self.colours['black'], board_value=3), 
                  Point(point=(self.centre_pt[0] + 270, self.centre_pt[1]), colour=self.colours['red'], board_value=9),
                  Point(point=(self.centre_pt[0] + 290, self.centre_pt[1]), colour=self.colours['black'], board_value=3),
                  Point(point=(self.centre_pt[0] + 440, self.centre_pt[1]), colour=self.colours['red'], board_value=6)]
         
-        # 6
         six = [Point(point=(self.centre_pt[0], self.centre_pt[1] + 50), colour=self.colours['white'], board_value=6),
                Point(point=(self.centre_pt[0], self.centre_pt[1] + 270), colour=self.colours['green'], board_value=18),
                Point(point=(self.centre_pt[0], self.centre_pt[1] + 290), colour=self.colours['white'], board_value=6),
                Point(point=(self.centre_pt[0], self.centre_pt[1] + 440), colour=self.colours['green'], board_value=12)]
         
-        # 11
         eleven = [Point(point=(self.centre_pt[0], self.centre_pt[1] - 50), colour=self.colours['white'], board_value=11),
                   Point(point=(self.centre_pt[0], self.centre_pt[1] - 270), colour=self.colours['green'], board_value=33),
                   Point(point=(self.centre_pt[0], self.centre_pt[1] - 290), colour=self.colours['white'], board_value=11),
                   Point(point=(self.centre_pt[0], self.centre_pt[1] - 440), colour=self.colours['green'], board_value=22)]
         
+        one = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1] + 20), colour=self.colours['white'], board_value=1),
+               Point(point=(self.centre_pt[0] - 270, self.centre_pt[1] + 50), colour=self.colours['green'], board_value=3),
+               Point(point=(self.centre_pt[0] - 290, self.centre_pt[1] + 60), colour=self.colours['white'], board_value=1),
+               Point(point=(self.centre_pt[0] - 440, self.centre_pt[1] + 90), colour=self.colours['green'], board_value=2)]
+        
+        five = [Point(point=(self.centre_pt[0] - 50, self.centre_pt[1] - 20), colour=self.colours['white'], board_value=5),
+               Point(point=(self.centre_pt[0] - 270, self.centre_pt[1] - 50), colour=self.colours['green'], board_value=15),
+               Point(point=(self.centre_pt[0] - 290, self.centre_pt[1] - 60), colour=self.colours['white'], board_value=5),
+               Point(point=(self.centre_pt[0] - 440, self.centre_pt[1] - 90), colour=self.colours['green'], board_value=10)]
+        
+        seventeen = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] + 20), colour=self.colours['white'], board_value=17),
+                     Point(point=(self.centre_pt[0] + 270, self.centre_pt[1] + 50), colour=self.colours['green'], board_value=51),
+                     Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] + 60), colour=self.colours['white'], board_value=17),
+                     Point(point=(self.centre_pt[0] + 440, self.centre_pt[1] + 90), colour=self.colours['green'], board_value=34)]
+        
+        nineteen = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] - 20), colour=self.colours['white'], board_value=19),
+                    Point(point=(self.centre_pt[0] + 270, self.centre_pt[1] - 50), colour=self.colours['green'], board_value=57),
+                    Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] - 60), colour=self.colours['white'], board_value=19),
+                    Point(point=(self.centre_pt[0] + 440, self.centre_pt[1] - 90), colour=self.colours['green'], board_value=38)]
+        
+        numbers = twenty + three + six + eleven + one + five + nineteen + seventeen
+        
         q = queue.Queue()
-        [q.put(i) for i in twenty+three+six+eleven]
+        [q.put(i) for i in numbers]
         
         while not q.empty():
             p = q.get()
@@ -171,7 +191,7 @@ class CreateDartboard():
         self.createOuterBullseye()
         #self.bullseyeWire()
         self.createNumbers()
-        self.printBoardSection((self.centre_pt[0], self.centre_pt[1]+ 40), 60)
+        self.printBoardSection((self.centre_pt[0]+420, self.centre_pt[1] - 80), 25)
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
