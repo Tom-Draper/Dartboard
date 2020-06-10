@@ -11,7 +11,7 @@ class CreateDartboard():
         
         self.colours = {}
         # Get value of the border colour around the dartboard
-        for pixel in img[0]:
+        for pixel in self.img[0]:
             if pixel[0] != 0:
                 self.colours['outside_border'] = pixel[0]
                 break
@@ -21,13 +21,13 @@ class CreateDartboard():
 
     # Scans the radius around the centre_pt and adds the updates dartboard with the 
     # board value at equivalent position where the input colour is found 
-    def addValue(self, r, colour, board_value, dartboard):
+    def addValue(self, r, colour, board_value):
         for i in range(self.centre_pt[0] - r, self.centre_pt[0] + r):
             for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
                 if (self.img[i][j] == colour).all():
-                    dartboard[i][j] = board_value
+                    self.dartboard[i][j] = board_value
 
-    def createInnerBullseye(self, dartboard):
+    def createInnerBullseye(self):
         # Get the colour of inner bullseye
         red_col = self.img[self.centre_pt[0]][self.centre_pt[1]]
         self.colours['red'] = red_col
@@ -41,74 +41,76 @@ class CreateDartboard():
                 r += 1  # Include centre
                 break
         
-        addValue(r, red_col, 50, dartboard)
-
-
-    def outerBullseyeRadius(self):
-        green_col = self.colours['green']
-        r = 1
+        self.addValue(r, self.colours['red'], 50)
+        
+    
+    def distanceCentreToColour(self, colour):
+        r = 0
         # Add distance from centre to first green pixel 
         while True:
-            if (self.img[self.centre_pt[0]][self.centre_pt[1] + r] != green_col).all():
-                r += 1
-        
-        # Add distance from first green pixel to last green pixel
-        while True:
-            if (self.img[self.centre_pt[0]][self.centre_pt[1] + r] == green_col).all():
+            if not (self.img[self.centre_pt[0]][self.centre_pt[1] + r] == colour).all():
                 r += 1
             else:
                 r += 1  # Include centre
                 break
         return r
 
-    def createOuterBullseye(self, dartboard):
+    def outerBullseyeRadius(self):
+        green_col = self.colours['green']
+        r = 1 + self.distanceCentreToColour(green_col)
+        # Add distance from first green pixel to last green pixel
+        while True:
+            if (self.img[self.centre_pt[0]][self.centre_pt[1] + r] == green_col).all():
+                r += 1
+            else:
+                break
+        return r
+
+    def createOuterBullseye(self):
         # Get the colour of outer bullseye
         green_col = 0
         for i in range(self.centre_pt[0]):
             pixel = self.img[self.centre_pt[0]][self.centre_pt[1] + i]
-            print(pixel)
             if pixel[0] == 0:
                 green_col = pixel
                 break
         self.colours['green'] = green_col
         
-        # Calculute outer bullseye radius
-        r = outerBullseyeRadius()
+        # Calculute outer bullseyeself. radius
+        r = self.outerBullseyeRadius()
         
-        addValue(self.centre_pt, r, green_col, 25, dartboard)
+        self.addValue(r, self.colours['green'], 25)
 
-
-    def allocateWire(self, dartboard, point):
+    def allocateWire(self, point):
         for r in range(100):
-            local = [dartboard[point[0] + r][point[1]],
-                    dartboard[point[0] - r][point[1]],
-                    dartboard[point[0]][point[1] + r],
-                    dartboard[point[0]][point[1] - r],
-                    dartboard[point[0] + r][point[1] + r],
-                    dartboard[point[0] + r][point[1] - r],
-                    dartboard[point[0] - r][point[1] + r],
-                    dartboard[point[0] - r][point[1] - r]]
+            local = [self.dartboard[point[0] + r][point[1]],
+                    self.dartboard[point[0] - r][point[1]],
+                    self.dartboard[point[0]][point[1] + r],
+                    self.dartboard[point[0]][point[1] - r],
+                    self.dartboard[point[0] + r][point[1] + r],
+                    self.dartboard[point[0] + r][point[1] - r],
+                    self.dartboard[point[0] - r][point[1] + r],
+                    self.dartboard[point[0] - r][point[1] - r]]
             
             if any(local):
-                local = local(filter(lambda v : v != 0, local))  # Remove zeros
+                local = list(filter(lambda v : v != 0, local))  # Remove zeros
                 if len(local) == 1:
-                    dartboard[point[0][point[1]]] = local[0]
+                    self.dartboard[point[0]][point[1]] = local[0]
                 else:
-                    dartboard[point[0][point[1]]] = np.random.choice(local)
+                    self.dartboard[point[0]][point[1]] = np.random.choice(local)
 
-
-    def bullseyeWire(self, dartboard):
-        r = outerBullseyeRadius(self.centre_pt, self.colours['green'])
+    def bullseyeWire(self):
+        r = self.distanceCentreToColour(self.colours['green'])
         
         for i in range(self.centre_pt[0] - r, self.centre_pt[0] + r):
             for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
-                if dartboard[i][j] == 0:
-                    allocateWire(dartboard, tuple((i, j)))
+                if self.dartboard[i][j] == 0:
+                    self.allocateWire(tuple((i, j)))
 
     def run(self):
-        createInnerBullseye(dartboard)
-        createOuterBullseye(dartboard)
-        bullseyeWire(dartboard)
+        self.createInnerBullseye()
+        self.createOuterBullseye()
+        self.bullseyeWire()
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
