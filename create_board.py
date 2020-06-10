@@ -48,27 +48,8 @@ class CreateDartboard():
     def printBoardSection(self, centre, r):
         for i in range(centre[0]-r, centre[0]+r):
             for j in range(centre[1]-r, centre[1]+r):
-                print(str(int(self.board_mask[i][j])).ljust(1), end=' ')
+                print(str(int(self.dartboard[i][j])).ljust(1), end=' ')
             print()
-
-    def allocateWire(self, point):
-        # Copy of board to find nearest values for each point
-        board = self.dartboard.copy()
-        
-        for r in range(100):
-            local = [board[point[0] + r][point[1]],
-                    board[point[0] - r][point[1]],
-                    board[point[0]][point[1] + r],
-                    board[point[0]][point[1] - r],
-                    board[point[0] + r][point[1] + r],
-                    board[point[0] + r][point[1] - r],
-                    board[point[0] - r][point[1] + r],
-                    board[point[0] - r][point[1] - r]]
-            
-            if any(local):
-                local = list(filter(lambda v : v != 0, local))  # Remove zeros
-                self.dartboard[point[0]][point[1]] = local[0]
-                break
     
     def createBoard(self):
         # Create queue of points inside each unique value dart section
@@ -230,12 +211,47 @@ class CreateDartboard():
                 if d > r:
                     self.board_mask[i][j] = False
     
+    def allocateWire(self, point):
+        # Copy of board to find nearest values for each point
+        board = self.dartboard.copy()
+        
+        r = 0
+        while True:
+            r += 1
+            local = []
+            
+            points = [(point[0] + r, point[1]), (point[0] - r, point[1]), 
+                      (point[0], point[1] + r), (point[0], point[1] - r),
+                      (point[0], point[1] + r), (point[0], point[1] + r),
+                      (point[0], point[1] + r), (point[0], point[1] - r),
+                      (point[0], point[1] - r), (point[0], point[1] + r),
+                      (point[0], point[1] + r), (point[0], point[1] - r)]
+            
+            for pt in points:
+                if self.board_mask[pt[0]][pt[1]]:  # If on the board
+                    if board[pt[0]][pt[1]] != 0:  # If not another wire
+                        local.append(board[pt[0]][pt[1]])  #T Take value
+                else:
+                    local.append(0)  # If reach off the board, take zero
+            
+            if any(local):
+                self.dartboard[point[0]][point[1]] = local[0]
+                break
+    
+    def removeWires(self):
+        for i in range(self.dartboard.shape[0]):
+            for j in range(self.dartboard.shape[1]):
+                if self.dartboard[i][j] == 0 and self.board_mask[i][j]:
+                    print(i, j)
+                    self.allocateWire((i,j))
+    
     def run(self):
         self.setColours()
         self.createBoard()
         self.calculateMask()
+        self.removeWires()
         self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 450), 50)
-        
+        np.save('dartboard.npy', self.dartboard)
 
 
 
