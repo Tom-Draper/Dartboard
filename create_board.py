@@ -174,15 +174,15 @@ class CreateDartboard():
                   Point(point=(self.centre_pt[0] - 290, self.centre_pt[1] - 160), colour=self.colours['black'], board_value=12),
                   Point(point=(self.centre_pt[0] - 380, self.centre_pt[1] - 220), colour=self.colours['red'], board_value=24)]
         
-        two = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] + 40), colour=self.colours['white'], board_value=2),
-               Point(point=(self.centre_pt[0] + 240, self.centre_pt[1] + 140), colour=self.colours['green'], board_value=6),
-               Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] + 160), colour=self.colours['white'], board_value=2),
-               Point(point=(self.centre_pt[0] + 380, self.centre_pt[1] + 220), colour=self.colours['green'], board_value=4)]
+        two = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] + 40), colour=self.colours['black'], board_value=2),
+               Point(point=(self.centre_pt[0] + 240, self.centre_pt[1] + 140), colour=self.colours['red'], board_value=6),
+               Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] + 160), colour=self.colours['black'], board_value=2),
+               Point(point=(self.centre_pt[0] + 380, self.centre_pt[1] + 220), colour=self.colours['red'], board_value=4)]
         
-        seven = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] - 40), colour=self.colours['white'], board_value=7),
-                 Point(point=(self.centre_pt[0] + 240, self.centre_pt[1] - 140), colour=self.colours['green'], board_value=21),
-                 Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] - 160), colour=self.colours['white'], board_value=7),
-                 Point(point=(self.centre_pt[0] + 380, self.centre_pt[1] - 220), colour=self.colours['green'], board_value=14)]
+        seven = [Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] - 40), colour=self.colours['black'], board_value=7),
+                 Point(point=(self.centre_pt[0] + 240, self.centre_pt[1] - 140), colour=self.colours['red'], board_value=21),
+                 Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] - 160), colour=self.colours['black'], board_value=7),
+                 Point(point=(self.centre_pt[0] + 380, self.centre_pt[1] - 220), colour=self.colours['red'], board_value=14)]
         
         four = [Point(point=(self.centre_pt[0] - 40, self.centre_pt[1] + 50), colour=self.colours['white'], board_value=4),
                 Point(point=(self.centre_pt[0] - 140, self.centre_pt[1] + 240), colour=self.colours['green'], board_value=12),
@@ -204,7 +204,7 @@ class CreateDartboard():
                    Point(point=(self.centre_pt[0] + 160, self.centre_pt[1] - 290), colour=self.colours['white'], board_value=16),
                    Point(point=(self.centre_pt[0] + 220, self.centre_pt[1] - 380), colour=self.colours['green'], board_value=32)]
         
-        numbers = twenty + three + six + eleven + one + five +  seventeen + nineteen + thirteen + ten + eight + eighteen + twelve + two + seven + four + fifteen + nine + sixteen
+        numbers = one + two + three + four + five + six + seven + eight + nine + ten + eleven + twelve + thirteen + fourteen + fifteen + sixteen + seventeen + eighteen + nineteen + twenty
         
         q = queue.Queue()
         q.put(bullseye)
@@ -247,7 +247,7 @@ class CreateDartboard():
         #self.createInnerBullseye()
         #self.createOuterBullseye()
         self.createBoard()
-        self.printBoardSection((self.centre_pt[0] - 140, self.centre_pt[1] + 240), 30)
+        self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 50), 50)
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
