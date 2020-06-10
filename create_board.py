@@ -1,7 +1,9 @@
 import numpy as np
+import copy
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import queue
+import random
 from collections import namedtuple
 
 
@@ -10,6 +12,7 @@ class CreateDartboard():
     def __init__(self, url):
         self.img = mpimg.imread(url)
         self.dartboard = np.zeros(shape=self.img.shape[:2])
+        self.wired_board = np.zeros(shape=self.img.shape[:2])
         # Matrix to state whether hit the board or not
         self.board_mask = np.ones(shape=self.img.shape[:2], dtype=bool)
         
@@ -48,7 +51,7 @@ class CreateDartboard():
     def printBoardSection(self, centre, r):
         for i in range(centre[0]-r, centre[0]+r):
             for j in range(centre[1]-r, centre[1]+r):
-                print(str(int(self.dartboard[i][j])).ljust(1), end=' ')
+                print(str(int(self.dartboard[i][j])).ljust(2), end=' ')
             print()
     
     def createBoard(self):
@@ -170,6 +173,8 @@ class CreateDartboard():
         while not q.empty():
             p = q.get()
             self.floodFill(p.point, p.colour, p.board_value)
+        
+        self.wired_board = copy.deepcopy(self.dartboard)
     
     def floodFillRecursion(self, point, colour, board_value):
         # Return if this point on image is not the target colour 
@@ -213,8 +218,6 @@ class CreateDartboard():
     
     def allocateWire(self, point):
         # Copy of board to find nearest values for each point
-        board = self.dartboard.copy()
-        
         r = 0
         while True:
             r += 1
@@ -222,15 +225,13 @@ class CreateDartboard():
             
             points = [(point[0] + r, point[1]), (point[0] - r, point[1]), 
                       (point[0], point[1] + r), (point[0], point[1] - r),
-                      (point[0], point[1] + r), (point[0], point[1] + r),
-                      (point[0], point[1] + r), (point[0], point[1] - r),
-                      (point[0], point[1] - r), (point[0], point[1] + r),
-                      (point[0], point[1] + r), (point[0], point[1] - r)]
+                      (point[0] + r, point[1] + r), (point[0] - r, point[1] + r),
+                      (point[0] + r, point[1] - r), (point[0] - r, point[1] - r)]
             
             for pt in points:
                 if self.board_mask[pt[0]][pt[1]]:  # If on the board
-                    if board[pt[0]][pt[1]] != 0:  # If not another wire
-                        local.append(board[pt[0]][pt[1]])  #T Take value
+                    if self.wired_board[pt[0]][pt[1]] != 0:  # If not another wire
+                        local.append(self.wired_board[pt[0]][pt[1]])  #T Take value
                 else:
                     local.append(0)  # If reach off the board, take zero
             
@@ -239,10 +240,13 @@ class CreateDartboard():
                 break
     
     def removeWires(self):
+        cur = 0
         for i in range(self.dartboard.shape[0]):
             for j in range(self.dartboard.shape[1]):
                 if self.dartboard[i][j] == 0 and self.board_mask[i][j]:
-                    print(i, j)
+                    if i != cur:
+                        cur = i
+                        print(cur, end='')
                     self.allocateWire((i,j))
     
     def run(self):
@@ -250,7 +254,8 @@ class CreateDartboard():
         self.createBoard()
         self.calculateMask()
         self.removeWires()
-        self.printBoardSection((self.centre_pt[0], self.centre_pt[1] - 450), 50)
+        self.printBoardSection((535,176), 55)
+        self.printBoardSection((535,1024), 55)
         np.save('dartboard.npy', self.dartboard)
 
 
