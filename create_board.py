@@ -223,10 +223,10 @@ class CreateDartboard():
             r += 1
             local = []
             
-            points = [(point[0] + r, point[1]), (point[0] - r, point[1]), 
-                      (point[0], point[1] + r), (point[0], point[1] - r),
-                      (point[0] + r, point[1] + r), (point[0] - r, point[1] + r),
-                      (point[0] + r, point[1] - r), (point[0] - r, point[1] - r)]
+            points = [(point[0], point[1] + r), (point[0], point[1] - r), 
+                      (point[0] + r, point[1] + r), (point[0] - r, point[1] - r), 
+                      (point[0] + r, point[1]), (point[0] - r, point[1]),
+                      (point[0] - r, point[1] + r), (point[0] + r, point[1] - r)]
             
             for pt in points:
                 if self.board_mask[pt[0]][pt[1]]:  # If on the board
@@ -244,9 +244,6 @@ class CreateDartboard():
         for i in range(self.dartboard.shape[0]):
             for j in range(self.dartboard.shape[1]):
                 if self.dartboard[i][j] == 0 and self.board_mask[i][j]:
-                    if i != cur:
-                        cur = i
-                        print(cur, end='')
                     self.allocateWire((i,j))
     
     def run(self):
@@ -254,10 +251,11 @@ class CreateDartboard():
         self.createBoard()
         self.calculateMask()
         self.removeWires()
-        self.printBoardSection((535,176), 55)
-        self.printBoardSection((535,1024), 55)
+        #self.printBoardSection((535,176), 55)
+        #self.printBoardSection((535,1024), 55)
+        #self.printBoardSection((176,535), 55)
+        #self.printBoardSection((1024,535), 55)
         np.save('dartboard.npy', self.dartboard)
-
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
