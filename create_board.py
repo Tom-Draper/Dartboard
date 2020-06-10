@@ -92,20 +92,15 @@ class CreateDartboard():
             
             if any(local):
                 local = list(filter(lambda v : v != 0, local))  # Remove zeros
-                if len(local) == 1:
-                    self.dartboard[point[0]][point[1]] = local[0]
-                    self.dartboard[point[0]][point[1]] = np.random.choice(local)
-
-    def bullseyeWire(self):
-        r = self.distanceCentreToColour(self.colours['green'])
-        
-        for i in range(self.centre_pt[0] - r, self.centre_pt[0] + r):
-            for j in range(self.centre_pt[1] - r, self.centre_pt[1] + r):
-                if self.dartboard[i][j] == 0:
-                    self.allocateWire((i, j))
+                self.dartboard[point[0]][point[1]] = local[0]
+                break
     
-    def createNumbers(self):
+    def createBoard(self):
+        # Create queue of points inside each unique value dart section
         Point = namedtuple('Point', 'point colour board_value')
+        
+        bullseye = Point(point=(self.centre_pt[0], self.centre_pt[1]), colour=self.colours['red'], board_value=50)
+        outer_bullseye = Point(point=(self.centre_pt[0] + 25, self.centre_pt[1]), colour=self.colours['green'], board_value=25)
 
         # Each number on the dart board:
         # [lower value, triple, higher value, double]
@@ -149,9 +144,31 @@ class CreateDartboard():
                     Point(point=(self.centre_pt[0] + 290, self.centre_pt[1] - 60), colour=self.colours['white'], board_value=19),
                     Point(point=(self.centre_pt[0] + 440, self.centre_pt[1] - 90), colour=self.colours['green'], board_value=38)]
         
-        numbers = twenty + three + six + eleven + one + five + nineteen + seventeen
+        thirteen = [Point(point=(self.centre_pt[0] - 20, self.centre_pt[1] + 50), colour=self.colours['black'], board_value=13),
+                    Point(point=(self.centre_pt[0] - 50, self.centre_pt[1] + 270), colour=self.colours['red'], board_value=39),
+                    Point(point=(self.centre_pt[0] - 60, self.centre_pt[1] + 290), colour=self.colours['black'], board_value=13),
+                    Point(point=(self.centre_pt[0] - 90, self.centre_pt[1] + 440), colour=self.colours['red'], board_value=26)]
+        
+        ten = [Point(point=(self.centre_pt[0] + 20, self.centre_pt[1] + 50), colour=self.colours['black'], board_value=10),
+               Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] + 270), colour=self.colours['red'], board_value=30),
+               Point(point=(self.centre_pt[0] + 60, self.centre_pt[1] + 290), colour=self.colours['black'], board_value=10),
+               Point(point=(self.centre_pt[0] + 90, self.centre_pt[1] + 440), colour=self.colours['red'], board_value=20)]
+        
+        fourteen = [Point(point=(self.centre_pt[0] - 20, self.centre_pt[1] - 50), colour=self.colours['black'], board_value=14),
+                    Point(point=(self.centre_pt[0] - 50, self.centre_pt[1] - 270), colour=self.colours['red'], board_value=42),
+                    Point(point=(self.centre_pt[0] - 60, self.centre_pt[1] - 290), colour=self.colours['black'], board_value=14),
+                    Point(point=(self.centre_pt[0] - 90, self.centre_pt[1] - 440), colour=self.colours['red'], board_value=28)]
+        
+        eight = [Point(point=(self.centre_pt[0] + 20, self.centre_pt[1] - 50), colour=self.colours['black'], board_value=8),
+                 Point(point=(self.centre_pt[0] + 50, self.centre_pt[1] - 270), colour=self.colours['red'], board_value=32),
+                 Point(point=(self.centre_pt[0] + 60, self.centre_pt[1] - 290), colour=self.colours['black'], board_value=8),
+                 Point(point=(self.centre_pt[0] + 90, self.centre_pt[1] - 440), colour=self.colours['red'], board_value=16)]
+        
+        numbers = twenty + three + six + eleven + one + five +  seventeen + nineteen + thirteen + ten + eight
         
         q = queue.Queue()
+        q.put(bullseye)
+        q.put(outer_bullseye)
         [q.put(i) for i in numbers]
         
         while not q.empty():
@@ -187,11 +204,10 @@ class CreateDartboard():
     
     def run(self):
         self.setColours()
-        self.createInnerBullseye()
-        self.createOuterBullseye()
-        #self.bullseyeWire()
-        self.createNumbers()
-        self.printBoardSection((self.centre_pt[0]+420, self.centre_pt[1] - 80), 25)
+        #self.createInnerBullseye()
+        #self.createOuterBullseye()
+        self.createBoard()
+        self.printBoardSection((self.centre_pt[0] + 50, self.centre_pt[1] + 270), 50)
 
 
 create = CreateDartboard('dartboard_img/dartboard.png')
