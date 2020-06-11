@@ -1,7 +1,16 @@
 import numpy as np
-x, y = np.meshgrid(np.linspace(-1,1,10), np.linspace(-1,1,10))
-d = np.sqrt(x*x+y*y)
-sigma, mu = 1.0, 0.0
-g = np.exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
-print("2D Gaussian-like array:")
-print(g)
+
+class Gaussian():
+    
+    def __init__(self):
+        self.gaussian = 0
+        print("2D Gaussian-like array:")
+
+    def calculateGaussian(self, sigma, mu, size):
+        x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
+        d = np.sqrt(x*x + y*y)
+        self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
+    
+    def applyGaussian(self):
+        pass
+
