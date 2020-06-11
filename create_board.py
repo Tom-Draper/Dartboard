@@ -22,8 +22,14 @@ class CreateDartboard():
         # Black [0. 0. 0. 1.]
         # White [0.90588236 0.89411765 0.78039217 1.]
         # Wire [0.9647059 0.18431373 0.2 1.] [0.8156863 0.92941177 0.99215686 1.] [0.8156863 0.92941177 0.99215686 1.] [0.5803922 0.8392157 0.7058824 1.]
-
+    
         self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # y, x
+    
+    def printBoardSection(self, centre, r):
+        for i in range(centre[0]-r, centre[0]+r):
+            for j in range(centre[1]-r, centre[1]+r):
+                print(str(int(self.dartboard[i][j])).ljust(2), end=' ')
+            print()
     
     def setColours(self):
         # Add value of the border colour around the dartboard
