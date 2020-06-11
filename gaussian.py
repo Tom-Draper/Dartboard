@@ -11,6 +11,10 @@ class Gaussian():
         d = np.sqrt(x*x + y*y)
         self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
     
-    def applyGaussian(self):
-        pass
+    def applyGaussian(self, dartboard, point):
+        if (self.gaussian == 0):
+            print("Set gaussian")
+            return
+            
+        
 

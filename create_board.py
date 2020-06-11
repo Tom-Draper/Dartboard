@@ -258,5 +258,3 @@ class CreateDartboard():
         np.save('dartboard.npy', self.dartboard)
 
 
-create = CreateDartboard('dartboard_img/dartboard.png')
-create.run()
