@@ -25,12 +25,6 @@ class CreateDartboard():
     
         self.centre_pt = tuple((int(self.img.shape[0]/2), int(self.img.shape[1]/2)))  # y, x
     
-    def printBoardSection(self, centre, r):
-        for i in range(centre[0]-r, centre[0]+r):
-            for j in range(centre[1]-r, centre[1]+r):
-                print(str(int(self.dartboard[i][j])).ljust(2), end=' ')
-            print()
-    
     def setColours(self):
         # Add value of the border colour around the dartboard
         for pixel in self.img[0]:
@@ -55,8 +49,24 @@ class CreateDartboard():
         self.colours['black'] = self.img[self.centre_pt[0] + 50][self.centre_pt[1]]
     
     def printBoardSection(self, centre, r):
-        for i in range(centre[0]-r, centre[0]+r):
-            for j in range(centre[1]-r, centre[1]+r):
+        y_low = 0
+        if centre[0]-r > 0:
+            y_low = centre[0]-r
+        
+        y_high = len(self.dartboard)
+        if centre[0]+r < len(self.dartboard):
+            y_high = centre[0]+r
+        
+        x_low = 0
+        if centre[1]-r > 0:
+            x_low = centre[1]-r
+            
+        x_high = len(self.dartboard)
+        if centre[1]+r < len(self.dartboard):
+            x_high = centre[1]+r
+        
+        for i in range(y_low, y_high):
+            for j in range(x_low, x_high):
                 print(str(int(self.dartboard[i][j])).ljust(2), end=' ')
             print()
     
