@@ -10,9 +10,14 @@ class Gaussian():
         x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
         d = np.sqrt(x*x + y*y)
         self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
+        self.gaussian = self.gaussian / np.sum(self.gaussian)
 
     def printGaussian(self):
-        print(self.gaussian)
+        for i in range(len(self.gaussian)):
+            for j in range(len(self.gaussian)):
+                print('{:4.2f}'.format(self.gaussian[i][j]), end='')
+            print()
+                
     
     def applyGaussian(self, dartboard, point):
         if (self.gaussian is int):

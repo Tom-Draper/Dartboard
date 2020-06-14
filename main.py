@@ -28,15 +28,19 @@ def printBoardSection(dartboard, centre, r):
                 print(str(int(dartboard[i][j])).ljust(3), end='')
         print()
 
+
 board = CreateDartboard('dartboard_img/dartboard.png')
 # board.run()
 
 dartboard = np.load('dartboard.npy')
 
 gaussian = Gaussian()
-kernel_size = 128
+# 127 and below for 20
+# 128 and above for 19
+# 
+kernel_size = 300
 gaussian.calculateGaussian(1, 0, kernel_size)
-gaussian.printGaussian()
+#gaussian.printGaussian()
 
 final = tuple(((len(dartboard), len(dartboard[1])), 0))  # (point, value)
 for _ in range(100):
@@ -83,6 +87,6 @@ for _ in range(100):
 
 print(final)
 
-printBoardSection(dartboard, final[0], kernel_size)
+#printBoardSection(dartboard, final[0], kernel_size)
 print()
 printBoardSection(dartboard, final[0], 25)
