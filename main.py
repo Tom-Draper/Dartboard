@@ -3,11 +3,6 @@ import random
 from create_board import CreateDartboard
 from gaussian import Gaussian
 
-
-def createBoard(board):
-    board.run()
-    board.printBoardSection((600,600), 100)         
-
 def printBoardSection(dartboard, centre, r):
     y_low = 0
     if centre[0]-r > 0:
@@ -27,23 +22,27 @@ def printBoardSection(dartboard, centre, r):
     
     for i in range(y_low, y_high):
         for j in range(x_low, x_high):
-            print(str(int(dartboard[i][j])).ljust(2), end=' ')
+            if i == y_low + (y_high - y_low)/2 and j == x_low + (x_high - x_low)/2:
+                print('|' + str(int(dartboard[i][j])).ljust(2), end='')
+            else:
+                print(str(int(dartboard[i][j])).ljust(3), end='')
         print()
 
 board = CreateDartboard('dartboard_img/dartboard.png')
-# createBoard(board)
+# board.run()
 
 dartboard = np.load('dartboard.npy')
 
 gaussian = Gaussian()
-gaussian.calculateGaussian(1, 0, 150)
+kernel_size = 128
+gaussian.calculateGaussian(1, 0, kernel_size)
 gaussian.printGaussian()
 
 final = tuple(((len(dartboard), len(dartboard[1])), 0))  # (point, value)
 for _ in range(100):
     complete = False
     point = (np.random.randint(200, 1000), np.random.randint(200, 1000))
-    d = 10
+    d = 1
     while not complete:
         value = gaussian.applyGaussian(dartboard, point)
         #print(point, value)
@@ -84,6 +83,6 @@ for _ in range(100):
 
 print(final)
 
-printBoardSection(dartboard, final[0], 40)
+printBoardSection(dartboard, final[0], kernel_size)
 print()
-printBoardSection(dartboard, final[0], 20)
+printBoardSection(dartboard, final[0], 25)
