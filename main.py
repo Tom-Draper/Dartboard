@@ -52,16 +52,27 @@ for _ in range(100):
         down = (point[0] + d, point[1])
         right = (point[0], point[1] + d)
         left = (point[0], point[1] - d)
-
+        up_right = (point[0] - d, point[1] + d)
+        up_left = (point[0] - d, point[1] - d)
+        down_right = (point[0] + d, point[1] + d)
+        down_left = (point[0] + d, point[1] - d)
         
         up_value = gaussian.applyGaussian(dartboard, up)
         down_value = gaussian.applyGaussian(dartboard, down)
         right_value = gaussian.applyGaussian(dartboard, right)
         left_value = gaussian.applyGaussian(dartboard, left)
+        up_right_value = gaussian.applyGaussian(dartboard, up_right)
+        up_left_value = gaussian.applyGaussian(dartboard, up_left)
+        down_right_value = gaussian.applyGaussian(dartboard, down_right)
+        down_left_value = gaussian.applyGaussian(dartboard, down_left)
         
-        value_to_point = {up_value : up, down_value : down, left_value : left, right_value : right}
+        value_to_point = {up_value : up, down_value : down, 
+                          right_value : right, left_value : left, 
+                          up_right_value : up_right, up_left_value : up_left, 
+                          down_right_value : down_right, down_left_value : down_left}
         
-        max_value = max([up_value, down_value, left_value, right_value])
+        max_value = max([up_value, down_value, right_value, left_value, 
+                         up_right_value, up_left_value, down_right_value, down_left_value])
         
         if value > max_value:  # Found max point
             optimum = value
