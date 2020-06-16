@@ -37,32 +37,31 @@ class Dartboard():
                 else:
                     print(str(int(self.board[i][j])).ljust(3), end='')
             print()
+        
+    def graphCoords(self, x, y):
+        # Convert x,y to graph coordinates
+        # Image uses (y, x)   (0,0)--> x
+        #                     |
+        #                     V y
+        #
+        # Graph uses (x, y)  ^ y
+        #                    |
+        #                    (0,0)--> x
+        new_x = y
+        new_y = self.board.shape[1] - 1 - x
+        return new_x, new_y
     
-    def graphBoard(self, spacing=10):
+    def graphBoard(self, spacing=10, kernel=None):
         plt.figure(figsize=(12, 12), dpi=80)
         plt.xlim(right=self.board.shape[1])
         plt.ylim(top=self.board.shape[0])
         
         for i in range(0, self.board.shape[0], spacing):
             for j in range(0, self.board.shape[1], spacing):
-                # Convert x,y to graph coordinates
-                # Image uses (y, x)   (0,0)--> x
-                #                     |
-                #                     V y
-                #
-                # Graph uses (x, y)  ^ y
-                #                    |
-                #                    (0,0)--> x
-                
-                x = j
-                y = self.board.shape[1] - 1 - i
-                
-                print(self.board[i][j], '   ', i, j, '   ', x, y)
+                x, y = self.graphCoords(i, j)
                 
                 if self.board[i][j] != 0:
                     plt.text(x, y, str(self.board[i][j]), fontsize=6)
-        
-        # for i in range(100):
-        #     print(self.board[600][100+i])
+
         plt.tight_layout(pad=0.07)
         plt.show()
