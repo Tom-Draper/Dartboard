@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 class Dartboard():
     
@@ -33,7 +34,7 @@ class Dartboard():
         for i in range(y_low, y_high):
             for j in range(x_low, x_high):
                 if i == y_low + (y_high - y_low)/2 and j == x_low + (x_high - x_low)/2:
-                    print('|' + str(int(board[i][j])).ljust(2), end='')
+                    print('|' + str(int(self.board[i][j])).ljust(2), end='')
                 else:
                     print(str(int(self.board[i][j])).ljust(3), end='')
             print()
@@ -51,11 +52,22 @@ class Dartboard():
         new_y = self.board.shape[1] - 1 - x
         return new_x, new_y
     
-    def graphBoard(self, spacing=10, kernel=None):
+    def graphBoard(self, spacing=10, kernel_size=None, kernel_centre=None):
+        #fig,ax = plt.subplots(1)
+        
         plt.figure(figsize=(12, 12), dpi=80)
         plt.xlim(right=self.board.shape[1])
         plt.ylim(top=self.board.shape[0])
         
+        # Display kernel rectangle
+        if kernel_size != None and kernel_centre != None:
+            centre = self.graphCoords(kernel_centre[0], kernel_centre[1])
+            # Move from centre to top left
+            top_left = (centre[0] - (kernel_size/2), centre[1] - (kernel_size/2))
+            square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor='r')
+            plt.gca().add_patch(square)
+        
+        # Plot dartboard values
         for i in range(0, self.board.shape[0], spacing):
             for j in range(0, self.board.shape[1], spacing):
                 x, y = self.graphCoords(i, j)
