@@ -43,12 +43,24 @@ class Dartboard():
         plt.xlim(right=self.board.shape[1])
         plt.ylim(top=self.board.shape[0])
         
-        for x in range(0, self.board.shape[0], spacing):
-            for y in range(0, self.board.shape[1], spacing):
-                y_flipped = (self.board.shape[1] - 1) - y
-                if self.board[x][y_flipped] != 0:
-                    plt.text(x, y, str(self.board[x][y_flipped]), fontsize=6)
-        
+        for i in range(0, self.board.shape[0], spacing):
+            for j in range(0, self.board.shape[1], spacing):
+                # Convert x,y to graph coordinates
+                # Image uses (y, x)   (0,0)--> x
+                #                     |
+                #                     V y
+                #
+                # Graph uses (x, y)  ^ y
+                #                    |
+                #                    (0,0)--> x
+                
+                x = j
+                y = self.board.shape[1] - 1 - i
+                
+                print(self.board[i][j], '   ', i, j, '   ', x, y)
+                
+                if self.board[i][j] != 0:
+                    plt.text(x, y, str(self.board[i][j]), fontsize=6)
         
         # for i in range(100):
         #     print(self.board[600][100+i])
