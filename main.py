@@ -59,8 +59,8 @@ def algorithm(dartboard, kernel_size):
 
 board = GenerateDartboard('dartboard_img/dartboard.png')
 
-#db = board.generate()
-db = board.load('dartboard.npy')
+db = board.generate()
+#db = board.load('dartboard.npy')
 
 
 kernel_size = 50

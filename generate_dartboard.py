@@ -45,8 +45,8 @@ class GenerateDartboard():
                 break
         self.colours['green'] = green_col
 
-        self.colours['white'] = self.img[self.db.centre_pt[0] + 50][self.db.centre_pt[1]]
-        self.colours['black'] = self.img[self.db.centre_pt[0]][self.db.centre_pt[1] + 50]
+        self.colours['white'] = self.img[self.db.centre_pt[0]][self.db.centre_pt[1] + 50]
+        self.colours['black'] = self.img[self.db.centre_pt[0] + 50][self.db.centre_pt[1]]
 
     def createBoard(self):
         # Create queue of points inside each unique value dart section
@@ -59,184 +59,184 @@ class GenerateDartboard():
 
         # Each number on the dart board:
         # [lower value, triple, higher value, double]
-        twenty = [Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 50),
+        twenty = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1]),
                         colour=self.colours['black'], board_value=20),
-                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 270),
+                  Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1]),
                         colour=self.colours['red'], board_value=60),
-                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 290),
+                  Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1]),
                         colour=self.colours['black'], board_value=20),
-                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 440),
+                  Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1]),
                         colour=self.colours['red'], board_value=40)]
 
-        three = [Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 50),
+        three = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1]),
                        colour=self.colours['black'], board_value=3),
-                 Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 270),
+                 Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1]),
                        colour=self.colours['red'], board_value=9),
-                 Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 290),
+                 Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1]),
                        colour=self.colours['black'], board_value=3),
-                 Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 440), 
+                 Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1]), 
                        colour=self.colours['red'], board_value=6)]
 
-        six = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1]), 
+        six = [Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 50), 
                      colour=self.colours['white'], board_value=6),
-               Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1]),
+               Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 270),
                      colour=self.colours['green'], board_value=18),
-               Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1]),
+               Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 290),
                      colour=self.colours['white'], board_value=6),
-               Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1]), 
+               Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] + 440), 
                      colour=self.colours['green'], board_value=12)]
 
-        eleven = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1]), 
+        eleven = [Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 50), 
                         colour=self.colours['white'], board_value=11),
-                  Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1]),
+                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 270),
                         colour=self.colours['green'], board_value=33),
-                  Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1]),
+                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 290),
                         colour=self.colours['white'], board_value=11),
-                  Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1]), 
+                  Point(point=(self.db.centre_pt[0], self.db.centre_pt[1] - 440), 
                         colour=self.colours['green'], board_value=22)]
 
-        one = [Point(point=(self.db.centre_pt[0] + 20, self.db.centre_pt[1] - 50), 
+        one = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 20), 
                      colour=self.colours['white'], board_value=1),
-               Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 270),
+               Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1] + 50),
                      colour=self.colours['green'], board_value=3),
-               Point(point=(self.db.centre_pt[0] + 60, self.db.centre_pt[1] - 290),
+               Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] + 60),
                      colour=self.colours['white'], board_value=1),
-               Point(point=(self.db.centre_pt[0] + 90, self.db.centre_pt[1] - 440), 
+               Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1] + 90), 
                      colour=self.colours['green'], board_value=2)]
 
-        five = [Point(point=(self.db.centre_pt[0] -20, self.db.centre_pt[1] -50), 
+        five = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] - 20), 
                       colour=self.colours['white'], board_value=5),
-                Point(point=(self.db.centre_pt[0] -50, self.db.centre_pt[1] - 270),
+                Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1] - 50),
                       colour=self.colours['green'], board_value=15),
-                Point(point=(self.db.centre_pt[0] -60, self.db.centre_pt[1] - 290),
+                Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] - 60),
                       colour=self.colours['white'], board_value=5),
-                Point(point=(self.db.centre_pt[0] -90, self.db.centre_pt[1] - 440), 
+                Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1] - 90), 
                       colour=self.colours['green'], board_value=10)]
 
-        seventeen = [Point(point=(self.db.centre_pt[0] + 20, self.db.centre_pt[1] + 50), 
+        seventeen = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 20), 
                            colour=self.colours['white'], board_value=17),
-                     Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 270),
+                     Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1] + 50),
                            colour=self.colours['green'], board_value=51),
-                     Point(point=(self.db.centre_pt[0] + 60, self.db.centre_pt[1] + 290),
+                     Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] + 60),
                            colour=self.colours['white'], board_value=17),
-                     Point(point=(self.db.centre_pt[0] + 90, self.db.centre_pt[1] + 440), 
+                     Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1] + 90), 
                            colour=self.colours['green'], board_value=34)]
 
-        nineteen = [Point(point=(self.db.centre_pt[0] - 20, self.db.centre_pt[1] + 50), 
+        nineteen = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 20), 
                           colour=self.colours['white'], board_value=19),
-                    Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 270),
+                    Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1] - 50),
                           colour=self.colours['green'], board_value=57),
-                    Point(point=(self.db.centre_pt[0] - 60, self.db.centre_pt[1] + 290),
+                    Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] - 60),
                           colour=self.colours['white'], board_value=19),
-                    Point(point=(self.db.centre_pt[0] - 90, self.db.centre_pt[1] + 440), 
+                    Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1] - 90), 
                           colour=self.colours['green'], board_value=38)]
 
-        thirteen = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 20), 
+        thirteen = [Point(point=(self.db.centre_pt[0] - 20, self.db.centre_pt[1] + 50), 
                           colour=self.colours['black'], board_value=13),
-                    Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1] - 50), 
+                    Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 270), 
                           colour=self.colours['red'], board_value=39),
-                    Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] - 60), 
+                    Point(point=(self.db.centre_pt[0] - 60, self.db.centre_pt[1] + 290), 
                           colour=self.colours['black'], board_value=13),
-                    Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1] - 90), 
+                    Point(point=(self.db.centre_pt[0] - 90, self.db.centre_pt[1] + 440), 
                           colour=self.colours['red'], board_value=26)]
 
-        ten = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 20), 
+        ten = [Point(point=(self.db.centre_pt[0] + 20, self.db.centre_pt[1] + 50), 
                      colour=self.colours['black'], board_value=10),
-               Point(point=(self.db.centre_pt[0] + 270, self.db.centre_pt[1] + 50), 
+               Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 270), 
                      colour=self.colours['red'], board_value=30),
-               Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] + 60), 
+               Point(point=(self.db.centre_pt[0] + 60, self.db.centre_pt[1] + 290), 
                      colour=self.colours['black'], board_value=10),
-               Point(point=(self.db.centre_pt[0] + 440, self.db.centre_pt[1] + 90), 
+               Point(point=(self.db.centre_pt[0] + 90, self.db.centre_pt[1] + 440), 
                      colour=self.colours['red'], board_value=20)]
 
-        fourteen = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] - 20), 
+        fourteen = [Point(point=(self.db.centre_pt[0] - 20, self.db.centre_pt[1] - 50), 
                           colour=self.colours['black'], board_value=14),
-                    Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1] - 50),
+                    Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] - 270),
                           colour=self.colours['red'], board_value=42),
-                    Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] - 60), 
+                    Point(point=(self.db.centre_pt[0] - 60, self.db.centre_pt[1] - 290), 
                           colour=self.colours['black'], board_value=14),
-                    Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1] - 90), 
+                    Point(point=(self.db.centre_pt[0] - 90, self.db.centre_pt[1] - 440), 
                           colour=self.colours['red'], board_value=28)]
 
-        eight = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 20), 
+        eight = [Point(point=(self.db.centre_pt[0] + 20, self.db.centre_pt[1] - 50), 
                        colour=self.colours['black'], board_value=8),
-                 Point(point=(self.db.centre_pt[0] - 270, self.db.centre_pt[1] + 50), 
+                 Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 270), 
                        colour=self.colours['red'], board_value=32),
-                 Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] + 60), 
+                 Point(point=(self.db.centre_pt[0] + 60, self.db.centre_pt[1] - 290), 
                        colour=self.colours['black'], board_value=8),
-                 Point(point=(self.db.centre_pt[0] - 440, self.db.centre_pt[1] + 90), 
+                 Point(point=(self.db.centre_pt[0] + 90, self.db.centre_pt[1] - 440), 
                        colour=self.colours['red'], board_value=16)]
 
-        eighteen = [Point(point=(self.db.centre_pt[0] + 40, self.db.centre_pt[1] - 50), 
+        eighteen = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 40), 
                           colour=self.colours['black'], board_value=18),
-                    Point(point=(self.db.centre_pt[0] + 140, self.db.centre_pt[1] - 240), 
+                    Point(point=(self.db.centre_pt[0] - 240, self.db.centre_pt[1] + 140), 
                           colour=self.colours['red'], board_value=54),
-                    Point(point=(self.db.centre_pt[0] + 160, self.db.centre_pt[1] - 290), 
+                    Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] + 160), 
                           colour=self.colours['black'], board_value=18),
-                    Point(point=(self.db.centre_pt[0] + 220, self.db.centre_pt[1] - 380), 
+                    Point(point=(self.db.centre_pt[0] - 380, self.db.centre_pt[1] + 220), 
                           colour=self.colours['red'], board_value=36)]
 
-        twelve = [Point(point=(self.db.centre_pt[0] - 40, self.db.centre_pt[1] - 50), 
+        twelve = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] - 40), 
                         colour=self.colours['black'], board_value=12),
-                  Point(point=(self.db.centre_pt[0] - 140, self.db.centre_pt[1] - 240), 
+                  Point(point=(self.db.centre_pt[0] - 240, self.db.centre_pt[1] - 140), 
                         colour=self.colours['red'], board_value=36),
-                  Point(point=(self.db.centre_pt[0] - 160, self.db.centre_pt[1] - 290), 
+                  Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] - 160), 
                         colour=self.colours['black'], board_value=12),
-                  Point(point=(self.db.centre_pt[0] - 220, self.db.centre_pt[1] - 380), 
+                  Point(point=(self.db.centre_pt[0] - 380, self.db.centre_pt[1] - 220), 
                         colour=self.colours['red'], board_value=24)]
 
-        two = [Point(point=(self.db.centre_pt[0] + 40, self.db.centre_pt[1] + 50), 
+        two = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 40), 
                      colour=self.colours['black'], board_value=2),
-               Point(point=(self.db.centre_pt[0] + 140, self.db.centre_pt[1] + 240), 
+               Point(point=(self.db.centre_pt[0] + 240, self.db.centre_pt[1] + 140), 
                      colour=self.colours['red'], board_value=6),
-               Point(point=(self.db.centre_pt[0] + 160, self.db.centre_pt[1] + 290), 
+               Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] + 160), 
                      colour=self.colours['black'], board_value=2),
-               Point(point=(self.db.centre_pt[0] + 220, self.db.centre_pt[1] + 380), 
+               Point(point=(self.db.centre_pt[0] + 380, self.db.centre_pt[1] + 220), 
                      colour=self.colours['red'], board_value=4)]
 
-        seven = [Point(point=(self.db.centre_pt[0] - 40, self.db.centre_pt[1] + 50), 
+        seven = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 40), 
                        colour=self.colours['black'], board_value=7),
-                 Point(point=(self.db.centre_pt[0] - 140, self.db.centre_pt[1] + 240), 
-                       colour=self.colours['red'], board_value=21),
-                 Point(point=(self.db.centre_pt[0] - 160, self.db.centre_pt[1] + 290), 
-                       colour=self.colours['black'], board_value=7),
-                 Point(point=(self.db.centre_pt[0] - 220, self.db.centre_pt[1] + 380), 
+                 Point(point=(self.db.centre_pt[0] + 240, self.db.centre_pt[1] -
+                              140), colour=self.colours['red'], board_value=21),
+                 Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] -
+                              160), colour=self.colours['black'], board_value=7),
+                 Point(point=(self.db.centre_pt[0] + 380, self.db.centre_pt[1] - 220), 
                        colour=self.colours['red'], board_value=14)]
 
-        four = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] - 40), 
+        four = [Point(point=(self.db.centre_pt[0] - 40, self.db.centre_pt[1] + 50), 
                       colour=self.colours['white'], board_value=4),
-                Point(point=(self.db.centre_pt[0] + 240, self.db.centre_pt[1] - 140), 
+                Point(point=(self.db.centre_pt[0] - 140, self.db.centre_pt[1] + 240), 
                       colour=self.colours['green'], board_value=12),
-                Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] - 160), 
+                Point(point=(self.db.centre_pt[0] - 160, self.db.centre_pt[1] + 290), 
                       colour=self.colours['white'], board_value=4),
-                Point(point=(self.db.centre_pt[0] + 380, self.db.centre_pt[1] - 220), 
+                Point(point=(self.db.centre_pt[0] - 220, self.db.centre_pt[1] + 380), 
                       colour=self.colours['green'], board_value=8)]
 
-        fifteen = [Point(point=(self.db.centre_pt[0] + 50, self.db.centre_pt[1] + 40), 
+        fifteen = [Point(point=(self.db.centre_pt[0] + 40, self.db.centre_pt[1] + 50), 
                          colour=self.colours['white'], board_value=15),
-                   Point(point=(self.db.centre_pt[0] + 240, self.db.centre_pt[1] + 140), 
+                   Point(point=(self.db.centre_pt[0] + 140, self.db.centre_pt[1] + 240), 
                          colour=self.colours['green'], board_value=45),
-                   Point(point=(self.db.centre_pt[0] + 290, self.db.centre_pt[1] + 160), 
+                   Point(point=(self.db.centre_pt[0] + 160, self.db.centre_pt[1] + 290), 
                          colour=self.colours['white'], board_value=15),
-                   Point(point=(self.db.centre_pt[0] + 380, self.db.centre_pt[1] + 220), 
+                   Point(point=(self.db.centre_pt[0] + 220, self.db.centre_pt[1] + 380), 
                          colour=self.colours['green'], board_value=30)]
 
-        nine = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] - 40), 
+        nine = [Point(point=(self.db.centre_pt[0] - 40, self.db.centre_pt[1] - 50), 
                       colour=self.colours['white'], board_value=9),
-                Point(point=(self.db.centre_pt[0] - 240, self.db.centre_pt[1] - 140), 
+                Point(point=(self.db.centre_pt[0] - 140, self.db.centre_pt[1] - 240), 
                       colour=self.colours['green'], board_value=27),
-                Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] - 160), 
+                Point(point=(self.db.centre_pt[0] - 160, self.db.centre_pt[1] - 290), 
                       colour=self.colours['white'], board_value=9),
-                Point(point=(self.db.centre_pt[0] - 380, self.db.centre_pt[1] - 220), 
+                Point(point=(self.db.centre_pt[0] - 220, self.db.centre_pt[1] - 380), 
                       colour=self.colours['green'], board_value=18)]
 
-        sixteen = [Point(point=(self.db.centre_pt[0] - 50, self.db.centre_pt[1] + 40), 
+        sixteen = [Point(point=(self.db.centre_pt[0] + 40, self.db.centre_pt[1] - 50), 
                          colour=self.colours['white'], board_value=16),
-                   Point(point=(self.db.centre_pt[0] - 240, self.db.centre_pt[1] + 140), 
+                   Point(point=(self.db.centre_pt[0] + 140, self.db.centre_pt[1] - 240), 
                          colour=self.colours['green'], board_value=48),
-                   Point(point=(self.db.centre_pt[0] - 290, self.db.centre_pt[1] + 160), 
+                   Point(point=(self.db.centre_pt[0] + 160, self.db.centre_pt[1] - 290), 
                          colour=self.colours['white'], board_value=16),
-                   Point(point=(self.db.centre_pt[0] - 380, self.db.centre_pt[1] + 220), 
+                   Point(point=(self.db.centre_pt[0] + 220, self.db.centre_pt[1] - 380), 
                          colour=self.colours['green'], board_value=32)]
 
         numbers = one + two + three + four + five + six + seven + eight + nine + \

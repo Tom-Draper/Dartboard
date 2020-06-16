@@ -48,6 +48,9 @@ class Dartboard():
                 y_flipped = (self.board.shape[1] - 1) - y
                 if self.board[x][y_flipped] != 0:
                     plt.text(x, y, str(self.board[x][y_flipped]), fontsize=6)
-                
+        
+        
+        # for i in range(100):
+        #     print(self.board[600][100+i])
         plt.tight_layout(pad=0.07)
         plt.show()
