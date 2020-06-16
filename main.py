@@ -1,17 +1,12 @@
 import numpy as np
-
-def printBoardSection(dartboard, centre, r):
-    for i in range(centre[0]-r, centre[0]+r):
-        for j in range(centre[1]-r, centre[1]+r):
-            print(str(int(dartboard[i][j])).ljust(2), end=' ')
-        print()
+from generate_dartboard import GenerateDartboard
+from gaussian import Gaussian
 
 
-board = CreateDartboard('dartboard_img/dartboard.png')
-#dartboard = board.run()
+board = GenerateDartboard('dartboard_img/dartboard.png')
+#dartboard = board.generate()
 
-dartboard = np.load('dartboard.npy')
-dartboard2 = np.load('dartboard2.npy')
+dartboard = board.load('dartboard.npy')
 
 gaussian = Gaussian()
 # 127 and below for 20
@@ -69,6 +64,6 @@ for kernel_size in range(2, 120, 2):
 
 # print(final)
 # print()
-# printBoardSection(dartboard, final[0], 40)
+# board.printBoardSection(dartboard, final[0], 40)
 for result in results:
     print(result)

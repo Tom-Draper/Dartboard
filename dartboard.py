@@ -3,11 +3,13 @@ import numpy as np
 class Dartboard():
     
     def __init__(self, size):
-        self.board = np.zeros(shape=self.img.shape[:2])
+        self.board = np.zeros(shape=size)
         # Earlier copy of the board that contains 0s along the wires
-        self.wired_board = np.zeros(shape=self.img.shape[:2])
+        self.wired_board = np.zeros(shape=size)
         # Boolean matrix to state whether hit the board or not
-        self.board_mask = np.ones(shape=self.img.shape[:2], dtype=bool)
+        self.board_mask = np.ones(shape=size, dtype=bool)
+        
+        self.centre_pt = tuple((int(size[0]/2), int(size[1]/2)))  # y, x
     
     def printBoardSection(self, centre, r):
         y_low = 0
@@ -28,7 +30,10 @@ class Dartboard():
         
         for i in range(y_low, y_high):
             for j in range(x_low, x_high):
-                print(str(int(self.board[i][j])).ljust(2), end=' ')
+                if i == y_low + (y_high - y_low)/2 and j == x_low + (x_high - x_low)/2:
+                    print('|' + str(int(board[i][j])).ljust(2), end='')
+                else:
+                    print(str(int(self.board[i][j])).ljust(3), end='')
             print()
     
     def graphBoard(self):
