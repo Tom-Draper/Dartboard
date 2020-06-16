@@ -4,10 +4,6 @@ class Dartboard():
     
     def __init__(self, size):
         self.board = np.zeros(shape=size)
-        # Earlier copy of the board that contains 0s along the wires
-        self.wired_board = np.zeros(shape=size)
-        # Boolean matrix to state whether hit the board or not
-        self.board_mask = np.ones(shape=size, dtype=bool)
         
         self.centre_pt = tuple((int(size[0]/2), int(size[1]/2)))  # y, x
     
