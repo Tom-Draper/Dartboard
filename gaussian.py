@@ -3,8 +3,7 @@ import numpy as np
 class Gaussian():
     
     def __init__(self):
-        self.gaussian = 0
-        print("2D Gaussian-like array:")
+        self.gaussian = None
 
     def calculateGaussian(self, sigma, mu, size):
         x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
