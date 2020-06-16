@@ -1,9 +1,15 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Dartboard():
     
     def __init__(self, size):
         self.board = np.zeros(shape=size)
+        
+        # Earlier copy of the board that contains 0s along the wires
+        self.wired_board = np.zeros(shape=size)
+        # Boolean matrix to state whether hit the board or not
+        self.board_mask = np.ones(shape=size, dtype=bool)
         
         self.centre_pt = tuple((int(size[0]/2), int(size[1]/2)))  # y, x
     
@@ -32,5 +38,15 @@ class Dartboard():
                     print(str(int(self.board[i][j])).ljust(3), end='')
             print()
     
-    def graphBoard(self):
-        pass
+    def graphBoard(self, spacing=10):
+        plt.figure(figsize=(10, 10), dpi=80)
+        plt.xlim(right=self.board.shape[1])
+        plt.ylim(top=self.board.shape[0])
+        
+        for y in range(0, self.board.shape[0], spacing):
+            for x in range(0, self.board.shape[1], spacing):
+                if self.board[x][y] != 0:
+                    plt.text(x, y, str(self.board[x][y]), fontsize=5)
+        #plt.plot(self.board)
+        plt.tight_layout(pad=0.07)
+        plt.show()

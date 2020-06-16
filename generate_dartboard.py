@@ -16,11 +16,6 @@ class GenerateDartboard():
         # Create db object
         # First two dimensions (no RGB)
         self.db = Dartboard(self.img.shape[:2])
-        
-        # Earlier copy of the board that contains 0s along the wires
-        self.wired_board = np.zeros(shape=self.img.shape[:2])
-        # Boolean matrix to state whether hit the board or not
-        self.board_mask = np.ones(shape=self.img.shape[:2], dtype=bool)
 
         # Red [1. 0. 0. 1.]
         # Green [0. 0.627451 0. 1.]
@@ -258,7 +253,7 @@ class GenerateDartboard():
             self.floodFill(p.point, p.colour, p.board_value)
 
         # Save current progress as a wired board (before wires are allocated)
-        self.wired_board = copy.deepcopy(self.db.board)
+        self.db.wired_board = copy.deepcopy(self.db.board)
 
     def floodFillRecursion(self, point, colour, board_value):
         # Return if this point on image is not the target colour
@@ -294,11 +289,11 @@ class GenerateDartboard():
                 r = i
                 break
 
-        for i in range(self.board_mask.shape[0]):
-            for j in range(self.board_mask.shape[1]):
+        for i in range(self.db.board_mask.shape[0]):
+            for j in range(self.db.board_mask.shape[1]):
                 d = np.sqrt((self.db.centre_pt[0]-i) **2 + (self.db.centre_pt[1]-j)**2)
                 if d > r:
-                    self.board_mask[i][j] = False
+                    self.db.board_mask[i][j] = False
 
     def allocateWire(self, point):
         # Copy of board to find nearest values for each point
@@ -313,10 +308,9 @@ class GenerateDartboard():
                       (point[0] - r, point[1] + r), (point[0] + r, point[1] - r)]
 
             for pt in points:
-                if self.board_mask[pt[0]][pt[1]]:  # If on the board
-                    if self.wired_board[pt[0]][pt[1]] != 0:  # If not another wire
-                        # T Take value
-                        local.append(self.wired_board[pt[0]][pt[1]])
+                if self.db.board_mask[pt[0]][pt[1]]:  # If on the board
+                    if self.db.wired_board[pt[0]][pt[1]] != 0:  # If point not another wire
+                        local.append(self.db.wired_board[pt[0]][pt[1]])  # Take value
                 else:
                     local.append(0)  # If reach off the board, take zero
 
@@ -328,7 +322,7 @@ class GenerateDartboard():
         cur = 0
         for i in range(self.db.board.shape[0]):
             for j in range(self.db.board.shape[1]):
-                if self.db.board[i][j] == 0 and self.board_mask[i][j]:
+                if self.db.board[i][j] == 0 and self.db.board_mask[i][j]:
                     self.allocateWire((i, j))
     
     def load(self, file):
@@ -336,7 +330,7 @@ class GenerateDartboard():
         self.db = Dartboard(self.img.shape[:2])  # Create fresh object
         self.db.board = board
         
-        return self.db.board
+        return self.db  # Return dartboard object
 
     def generate(self):
         self.setColours()
@@ -348,4 +342,4 @@ class GenerateDartboard():
         #self.printBoardSection((176,535), 55)
         #self.printBoardSection((1024,535), 55)
         np.save('dartboard.npy', self.db.board)
-        return self.db.board
+        return self.db  # Return dartboard object 

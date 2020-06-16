@@ -2,21 +2,13 @@ import numpy as np
 from generate_dartboard import GenerateDartboard
 from gaussian import Gaussian
 
-
-board = GenerateDartboard('dartboard_img/dartboard.png')
-#dartboard = board.generate()
-
-dartboard = board.load('dartboard.npy')
-
-gaussian = Gaussian()
-# 127 and below for 20
-# 128 and above for 19
-# 128 -> drops a couple cm vertically down the board -> 173
-# 173 and above for top of 20
-#kernel_size = 173
-results = []
-for kernel_size in range(2, 120, 2):
-    print(kernel_size)
+def algorithm(dartboard, kernel_size):
+    gaussian = Gaussian()
+    # 127 and below for 20
+    # 128 and above for 19
+    # 128 -> drops a couple cm vertically down the board -> 173
+    # 173 and above for top of 20
+    
     gaussian.calculateGaussian(1, 0, kernel_size)
 
     final = tuple(((len(dartboard), len(dartboard[1])), 0))  # (point, value)
@@ -24,6 +16,7 @@ for kernel_size in range(2, 120, 2):
         complete = False
         point = (np.random.randint(200, 1000), np.random.randint(200, 1000))
         d = 2
+        # Search for local maximum at this starting point
         while not complete:
             value = gaussian.applyGaussian(dartboard, point)
             
@@ -53,17 +46,35 @@ for kernel_size in range(2, 120, 2):
             max_value = max([up_value, down_value, right_value, left_value, 
                             up_right_value, up_left_value, down_right_value, down_left_value])
             
-            if value >= max_value:  # Found max point
-                optimum = value
-                if (optimum > final[1]):  # Record max value found this time
-                    final = (point, optimum)
+
+            if value >= max_value:  # If current point is highest in the local area
+                if (value > final[1]):
+                    final = (point, value)  # Update the final value with improvement
                 complete = True
             else:
                 point = value_to_point[max_value]  # Take the point with the maximum value
-    results.append(tuple((kernel_size, dartboard[final[0][0]][final[0][1]], final)))
 
-# print(final)
+    return final
+
+
+board = GenerateDartboard('dartboard_img/dartboard.png')
+
+#db = board.generate()
+db = board.load('dartboard.npy')
+
+
+kernel_size = 50
+#results = []
+#for kernel_size in range(2, 120, 2):
+    #print(kernel_size)
+    # -----
+    #final = algorithm(db.board, kernel_size)
+    # ----
+#results.append(tuple((kernel_size, db.board[final[0][0]][final[0][1]], final)))
+#print(final)
+
 # print()
-# board.printBoardSection(dartboard, final[0], 40)
-for result in results:
-    print(result)
+# board.printBoardSection(db.board, final[0], 40)
+db.graphBoard(spacing=10)
+#for result in results:
+#    print(result)
