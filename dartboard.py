@@ -39,14 +39,15 @@ class Dartboard():
             print()
     
     def graphBoard(self, spacing=10):
-        plt.figure(figsize=(10, 10), dpi=80)
+        plt.figure(figsize=(12, 12), dpi=80)
         plt.xlim(right=self.board.shape[1])
         plt.ylim(top=self.board.shape[0])
         
-        for y in range(0, self.board.shape[0], spacing):
-            for x in range(0, self.board.shape[1], spacing):
+        for x in range(0, self.board.shape[0], spacing):
+            for y in range(0, self.board.shape[1], spacing):
                 if self.board[x][y] != 0:
-                    plt.text(x, y, str(self.board[x][y]), fontsize=5)
+                    plt.text(x, y, str(self.board[x][y]), fontsize=6)
+        print(self.board[600][950])
         #plt.plot(self.board)
         plt.tight_layout(pad=0.07)
         plt.show()
