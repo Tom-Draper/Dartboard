@@ -3,7 +3,35 @@ from collections import namedtuple
 from generate_dartboard import GenerateDartboard
 from gaussian import Gaussian
 
-def algorithm(dartboard, kernel_size):
+def algorithm(dartboard, kernel_size, loops):
+    """Takes a dartboard to search, the size of the kernel (K x K) to use and
+       the number of loops to repeat the search. The algorithm selects a random 
+       point on the dartboard. The gaussian distribution kernel is applied to 
+       the area around the point to give a value of how optimal that point is to 
+       aim for. The algorithm uses gradient descent and tests the nearby points, 
+       taking the maximum. This is continued until a local maximum is found.
+       This process is repeated by the input number of loops and the maximum
+       value found is saved and returned.
+
+    Args:
+        dartboard (2D int array): Same dimensions as the dartboard image
+                                  to represent the dartboard. Each element holds
+                                  the board value found on a dartboard at that location.
+        kernel_size (int): Size of the square kernel (kernel_size X kernel_size)
+                           to apply during the algorithm.
+        loops (int): The number of times to repeat a gradient descent process
+                     and find the local maximum of a point. The more loops,
+                     the higher the accuracy.
+
+    Returns:
+        Named tuple: (point, board_value, expected_value) 
+                    - point: (int, int) Tuple of a board position (x, y)
+                    - board_value: The value of the element in dartboard at 
+                      that point
+                    - expected_value: The value the returned from applying the 
+                      kernel to that point
+    """
+    
     # 127 and below for 20
     # 128 and above for 19
     # 128 -> drops a couple cm vertically down the board -> 173
@@ -15,7 +43,7 @@ def algorithm(dartboard, kernel_size):
     
     Final = namedtuple('Final', 'point board_value expected_value')
     final = Final(point=(len(dartboard), len(dartboard[1])), board_value=0, expected_value=0)
-    for _ in range(200):
+    for _ in range(loops):
         complete = False
         point = (np.random.randint(200, 1000), np.random.randint(200, 1000))
         d = 2
@@ -70,6 +98,20 @@ def algorithm(dartboard, kernel_size):
     return final
 
 def algorithmRange(dartboard, lower, higher, step=1):
+    """Applies the gradient descent algorithm for a range of different kernel sizes.
+
+    Args:
+        dartboard (2D Int array): Same dimensions as the dartboard image
+                                  to represent the dartboard. Each element holds
+                                  the board value found on a dartboard at that location.
+        lower ([type]): The lower bound of the kernel size to use.
+        higher ([type]): The upper bound of the kernel size to use.
+        step (int, optional): The step size between lower and higher. Defaults to 1.
+
+    Returns:
+        Dict (key - int, value - named tuple): kernel_size maps to a named tuple 
+                                               (point, board_value, expected_value) 
+    """
     # Build list of tuples (kernel size, point (x,y), max value) for each kernel size in range
     results = {}
     for kernel_size in range(lower, higher, step):
