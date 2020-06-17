@@ -101,15 +101,15 @@ def algorithmRange(dartboard, lower, higher, step=1):
     """Applies the gradient descent algorithm for a range of different kernel sizes.
 
     Args:
-        dartboard (2D Int array): Same dimensions as the dartboard image
+        dartboard (2D int array): Same dimensions as the dartboard image
                                   to represent the dartboard. Each element holds
                                   the board value found on a dartboard at that location.
-        lower ([type]): The lower bound of the kernel size to use.
-        higher ([type]): The upper bound of the kernel size to use.
+        lower (int): The lower bound of the kernel size to use.
+        higher (int): The upper bound of the kernel size to use.
         step (int, optional): The step size between lower and higher. Defaults to 1.
 
     Returns:
-        Dict (key - int, value - named tuple): kernel_size maps to a named tuple 
+        Dict (key = int, value = named tuple): kernel_size maps to a named tuple 
                                                (point, board_value, expected_value) 
     """
     # Build list of tuples (kernel size, point (x,y), max value) for each kernel size in range
