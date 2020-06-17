@@ -22,6 +22,7 @@ class Dartboard():
             centre (Tuple (int, int)): point (x, y) on the dartboard to print. 
             r (int): radius of the square to print.
         """
+        
         # Check if the square to print goes off the dartboard.
         y_low = 0
         if centre[0]-r > 0:
