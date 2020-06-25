@@ -26,6 +26,8 @@ class GenerateDartboard():
         
 
     def setColours(self):
+        """Finds each unique colour on the dartboard (red, green, black, white)
+           and saves each RGB colour value to a class colour dictionary."""
         # Add value of the border colour around the db
         for pixel in self.img[0]:
             if pixel[0] != 0:
@@ -49,7 +51,12 @@ class GenerateDartboard():
         self.colours['black'] = self.img[self.db.centre_pt[0] + 50][self.db.centre_pt[1]]
 
     def createBoard(self):
-        # Create queue of points inside each unique value dart section
+        """Creates a queue of unique sections of the dartboard using hardcoded 
+           points (x, y). Run a flood filling algorithm on each of the points
+           in the queue and insert the dartboard value at that same point in the 
+           dartboard array.
+           Finishes with a 2D dartboard array filled with dartboard values at the 
+           correct locations, with 0s along the wires and outside the board."""
         Point = namedtuple('Point', 'point colour board_value')
 
         bullseye = Point(point=(self.db.centre_pt[0], self.db.centre_pt[1]), 
@@ -256,8 +263,22 @@ class GenerateDartboard():
         self.db.wired_board = copy.deepcopy(self.db.board)
 
     def floodFillRecursion(self, point, colour, board_value):
+        """Recursively takes a point checks whether the point on the image is 
+           the target colour "to fill". If so, the board value is inserted into 
+           the identical location in the dartboard. If not, no action is taken.
+           It then applys this algorithm to all neighbouring points.
+
+        Args:
+            point (Tuple (int, int)): point (x, y) on the dartboard to apply the 
+                                      algorithm.
+            colour (Array [float, float, float, float]): RBGA colour value of 
+                                                         the area you want to 
+                                                         flood
+            board_value (int): the board value to add to the dartboard at the 
+                               corresponding place (e.g. 50 for the bullseye)
+        """
         # Return if this point on image is not the target colour
-        # OR if this position on db has already been filled
+        # OR if this position on dartboard has already been filled
         if not (self.img[point[0]][point[1]] == colour).all() or self.db.board[point[0]][point[1]] == board_value:
             return
         else:
@@ -268,21 +289,50 @@ class GenerateDartboard():
             self.floodFill((point[0], point[1] - 1), colour, board_value)
 
     def floodFill(self, point, colour, board_value):
+        """Takes a point checks whether the point on the image is the target colour 
+           "to fill". If so, the board value is inserted into the identical
+           location in the dartboard. This points neighbours is added to a queue
+           to repeat the process on them. Finished once the queue is empty.
+
+        Args:
+            point (Tuple (int, int)): point (x, y) on the dartboard to apply the 
+                                      algorithm.
+            colour (Array [float, float, float, float]): RBGA colour value of 
+                                                         the area you want to 
+                                                         flood
+            board_value (int): the board value to add to the dartboard at the 
+                               corresponding place (e.g. 50 for the bullseye)
+        """
+        # Return if this point on image is not the target colour
+        # OR if this position on dartboard has already been filled
         if not (self.img[point[0]][point[1]] == colour).all() or self.db.board[point[0]][point[1]] == board_value:
             return
         else:
+            # Add the board value to input point
             self.db.board[point[0]][point[1]] = board_value
-            #print(point, board_value)
+            
+            # Create a queue to hold points that its neighbours need to be checked
             q = queue.Queue()
             q.put(point)
             while not q.empty():
+                # Take point from the queue, add neighbouring points around current
+                # point to the queue IF they have the target colour and have not 
+                # yet been filled in the dartboard
                 n = q.get()
                 for pt in [(n[0] + 1, n[1]), (n[0], n[1] + 1), (n[0] - 1, n[1]), (n[0], n[1] - 1)]:
+                    # If this point in the image contains target colour
+                    # AND this point in the dartboard has not yet been filled
+                    # AND this point is not already in the queue
                     if (self.img[pt[0]][pt[1]] == colour).all() and self.db.board[pt[0]][pt[1]] != board_value and (pt[0], pt[1]) not in q.queue:
                         self.db.board[pt[0]][pt[1]] = board_value
+                        # Add point to the queue to check neighbours
                         q.put((pt[0], pt[1]))
 
     def calculateMask(self):
+        """Calculates the 2D array mask containing 1s where the dartboard is 
+           present and 0s where it is not. Searches for the outside board colour
+           in the image to find the radius of the dartboard and uses distance to
+           centre to determine if point is inside or outside board."""
         r = 0
         # Calculate radius to
         for i in range(self.db.centre_pt[0]):
