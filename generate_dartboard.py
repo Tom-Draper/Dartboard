@@ -297,7 +297,7 @@ class GenerateDartboard():
         Args:
             point (Tuple (int, int)): point (x, y) on the dartboard to apply the 
                                       algorithm.
-            colour (Array [float, float, float, float]): RBGA colour value of 
+            colour (1D float array (length 4)): RBGA colour value of 
                                                          the area you want to 
                                                          flood
             board_value (int): the board value to add to the dartboard at the 
@@ -347,6 +347,18 @@ class GenerateDartboard():
                     self.db.board_mask[i][j] = False
 
     def allocateWire(self, point):
+        """Searches through a 2D dartboard array with dartboard values filled in
+           and for each blank zero value on the dartboard (areas containing wire)
+           it searches for the nearest dartboard value to take the value of.
+           Results in a 2D dartboard with all elements within the dartboard radius
+           contining a dartboard value (no zeros). The only zeros in the 2D dartboard
+           array are locations outside the perimeter of the dartboard.
+
+        Args:
+            point (Tuple (int, int)): point (x, y) on the 2D dartboard where a 
+                                      wire is located wire and initially containing 
+                                      zero.
+        """
         # Copy of board to find nearest values for each point
         r = 0
         while True:
@@ -370,14 +382,26 @@ class GenerateDartboard():
                 break
 
     def removeWires(self):
+        """Searches through all points in the 2D dartboard array that are within
+           the perimeter of the dartboard. If a point contains a zero, it is 
+           interpreted as a wire and it takes the nearest board value."""
         cur = 0
         for i in range(self.db.board.shape[0]):
             for j in range(self.db.board.shape[1]):
                 if self.db.board[i][j] == 0 and self.db.board_mask[i][j]:
                     self.allocateWire((i, j))
     
-    def load(self, file):
-        board = np.load('dartboard.npy')
+    def load(self, filename):
+        """Loads a dartboard numpy array.
+           Creates and populates dartboard object with loaded array.
+
+        Args:
+            file (string): name of the file to load
+
+        Returns:
+            2D int array: 2D numpy dartboard array
+        """
+        board = np.load(filename)
         self.db = Dartboard(self.img.shape[:2])  # Create fresh object
         self.db.board = board
         
