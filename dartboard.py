@@ -50,7 +50,7 @@ class Dartboard():
                     print(str(int(self.board[i][j])).ljust(3), end='')
             print()
         
-    def graphCoords(self, point):
+    def convertToGraphCoords(self, point):
         """Convert image/dartboard array coordinates (x,y) to graph coordinates (x,y)
            Image uses (y, x)   (0,0)--> x
                                  |
@@ -72,7 +72,7 @@ class Dartboard():
         new_y = self.board.shape[1] - 1 - x
         return (new_x, new_y)
     
-    def graphBoard(self, spacing=10, kernel_size=None, kernel_centre=None):
+    def graphBoard(self, spacing=10, kernel_size=None, kernel_centres=[]):
         """Displays the dartboard board in the form of a graph.
            Each point in the dartboard is looped through, skipping out the values
            for the given spacing and the integer value held at that point on the 
@@ -91,33 +91,60 @@ class Dartboard():
                                          provided, the kernel will be displayed 
                                          as a scaled square over its given location 
                                          on the dartboard. Defaults to None.
-            kernel_centre (Tuple (int, int), optional): The centre point (x, y)
+            kernel_centres (List [Tuple (int, int)], optional): The centre point (x, y)
                                                         If provided, the kernel 
                                                         will be displayed as a 
                                                         scaled square over its 
                                                         given location on the dartboard. 
                                                         Defaults to None.
+            kernel_centres (list of tuple(int, int), optional): A list of centre points 
+                                                        (x, y) that have been used 
+                                                        during gradient descent 
+                                                        with the final point in 
+                                                        the list the maximum point.
+                                                        For each centre point in
+                                                        in the list, a kernel of
+                                                        size kernel_size is graphed
+                                                        at that position
+                                                        Defaults to None.
         """
         
         plt.figure(figsize=(12, 12), dpi=80)
-        plt.xlim(right=self.board.shape[1])
-        plt.ylim(top=self.board.shape[0])
         
-        # Display kernel rectangle
-        if kernel_size != None and kernel_centre != None:
-            centre = self.graphCoords(kernel_centre)
-            # Move from centre to top left
-            top_left = (centre[0] - (kernel_size/2), centre[1] - (kernel_size/2))
-            square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor='r')
-            plt.gca().add_patch(square)
+        if type(kernel_centres) != list:
+            kernel_centres = [kernel_centres]
+        
+        # Display kernel rectangle at each kernel position in kernel_centres
+        if kernel_size != None and len(kernel_centres) != 0:
+            for i, centre in enumerate(kernel_centres):
+                c = self.convertToGraphCoords(centre)
+                # Move from centre to top left
+                top_left = (c[0] - (kernel_size/2), c[1] - (kernel_size/2))
+                # If displaying last kernel position (the maxima) use a green colour
+                if i == len(kernel_centres) - 1:
+                    edge_colour = 'g'
+                else:
+                    edge_colour = 'r'
+                square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor=edge_colour)
+                plt.gca().add_patch(square)
+        
+        # Display green dot at exact point of maxima 
+        # plt.plot(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0], 'go')
+        circle = plt.Circle(xy=(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0]), radius=4, linewidth=2, edgecolor='w')
+        plt.gca().add_patch(circle)
         
         # Plot dartboard values
         for i in range(0, self.board.shape[0], spacing):
             for j in range(0, self.board.shape[1], spacing):
-                x, y = self.graphCoords(i, j)
+                x, y = self.convertToGraphCoords((i, j))
                 
                 if self.board[i][j] != 0:
                     plt.text(x, y, str(self.board[i][j]), fontsize=6)
 
-        plt.tight_layout(pad=0.07)
+        plt.xlim([100, 1100])
+        plt.ylim([100, 1100])
+        plt.axis('off')
+        plt.tight_layout(pad=0)
+        plt.annotate(f'Kernel size= {kernel_size}', xy=(150, 1050), size=20)
+        plt.savefig("maxima.png", bbox_inches='tight')
         plt.show()
