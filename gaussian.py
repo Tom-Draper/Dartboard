@@ -1,5 +1,8 @@
 import numpy as np
 
+"""Holds the functions to generate and apply 2D Gaussian kernel to a section of
+   a dartboard numpy array.
+"""
 class Gaussian():
     
     def __init__(self):
