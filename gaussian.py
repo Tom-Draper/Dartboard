@@ -61,5 +61,3 @@ class Gaussian():
         p = np.sum(db * self.gaussian)
         
         return p
-        
-

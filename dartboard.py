@@ -136,7 +136,7 @@ class Dartboard:
         
         # Display green dot at exact point of maxima 
         # plt.plot(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0], 'go')
-        circle = plt.Circle(xy=(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0]), radius=4, linewidth=2, edgecolor='w')
+        circle = plt.Circle(xy=(kernel_centres[-1][1], 1200 - kernel_centres[-1][0]), radius=4, linewidth=2, edgecolor='w')
         plt.gca().add_patch(circle)
         
         # Plot dartboard values

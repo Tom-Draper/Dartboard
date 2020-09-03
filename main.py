@@ -1,6 +1,6 @@
 import numpy as np
 from collections import namedtuple
-from generate_dartboard import GenerateDartboard
+from dartboard import GenerateDartboard
 from gaussian import Gaussian
 
 
