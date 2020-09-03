@@ -3,6 +3,7 @@ from collections import namedtuple
 from generate_dartboard import GenerateDartboard
 from gaussian import Gaussian
 
+
 def gradientDescent(dartboard, kernel_size, loops, d=1):
     """Takes a dartboard to search, the size of the kernel (K x K) to use and
        the number of loops to repeat the search. The algorithm selects a random 
@@ -111,12 +112,12 @@ def gradientDescent(dartboard, kernel_size, loops, d=1):
                 # Take the point with the maximum value to use next loop
                 point = value_to_point[max_exp_value]
                 gradient_descent_path.append(point)
+    
     print("-"*40, "\n")
     print("GLOBAL MAXIMA FOUND:", final, "\nPATH TAKEN:", final_gradient_descent_path, "\n")
     print("Displaying...")
     if kernel_size < 50:
         db.printBoardSection(centre=final.point, r=int(kernel_size/2))
-    # db.graphBoard(spacing=10, kernel_size=kernel_size, kernel_centres=[final.point])
     db.graphBoard(spacing=10, kernel_size=kernel_size, kernel_centres=final_gradient_descent_path)
 
     return final
