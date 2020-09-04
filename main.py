@@ -187,5 +187,5 @@ if __name__ == "__main__":
     # algorithm.run(db.board, kernel_size=126, loops=1000, d=5)
     # Triple 19
     # algorithm.run(db.board, kernel_size=127, loops=1000, d=5)
-    algorithm.run(db.board, kernel_size=50, loops=500, d=5)
-    # algorithm.runOverRange(db.board, k_lower=120, k_higher=150, loops=500, step=1, display="none")
+    #algorithm.run(db.board, kernel_size=20, loops=500, d=5)
+    algorithm.runOverRange(db.board, k_lower=130, k_higher=140, loops=500, step=1, display="none")

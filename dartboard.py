@@ -127,8 +127,10 @@ class Dartboard:
                     edge_colour = 'g'
                 else:
                     edge_colour = 'r'
-                square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor=edge_colour)
-                plt.gca().add_patch(square)
+                # square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor=edge_colour)
+                # plt.gca().add_patch(square)
+                circle = plt.Circle(xy=c, radius=kernel_size/2, linewidth=2, edgecolor=edge_colour)
+                plt.gca().add_patch(circle)
         
         if kernel_size > 20:
             # Display small green dot at exact point of maxima 

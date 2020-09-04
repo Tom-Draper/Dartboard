@@ -9,8 +9,23 @@ class Gaussian():
         self.gaussian = None
     
     def calcCircularMask(self, size):
+        """Calculates a circular numpy mask, with ones at positions in the circle
+           and zeros in positions outside the circle.
+           Circle has radius of half of the size.
+
+        Args:
+            size (int): length of the NxN 2D array, and diameter of the circular 
+                        mask.
+        """
         mask = np.ones((size, size), dtype=int)
-        print(mask)
+        radius = (size - 1) / 2
+        
+        for i in range(size):
+            for j in range(size):
+                if np.sqrt((i-radius)**2 + (j-radius)**2) > radius + 1:
+                    mask[i][j] = 0
+        return mask
+            
     
     def calcCircularGaussian(self, sigma, mu, size):
         """Calculates and stores a circular Gaussian kernel, with zeros in the
@@ -24,7 +39,10 @@ class Gaussian():
         x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
         d = np.sqrt(x*x + y*y)
         self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
-        circlular_mask = self.calcCircularMask(size)
+        
+        circular_mask = self.calcCircularMask(size)
+        self.gaussian = self.gaussian * circular_mask
+            
         # Normalise
         self.gaussian = self.gaussian / np.sum(self.gaussian)
         
