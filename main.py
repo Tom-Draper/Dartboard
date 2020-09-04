@@ -1,15 +1,14 @@
 import numpy as np
 from collections import namedtuple
-from dartboard import GenerateDartboard
+from generate_dartboard import GenerateDartboard
 from gaussian import Gaussian
 
-class FinalPoint(namedtuple('FinalPoint', ['point', 'point_value', 'expected_value', 'surrounding_values'])):
-        __slots__ = ()
-        
-        def __str__(self):
-            return f"Final Point: (x={self.point[0]}, y={self.point[1]}), point value={self.point_value}, expected value={round(self.expected_value, 2)}, surrounding values {list(map(lambda x : round(x, 2), self.surrounding_values))}"
-        
 
+class FinalPoint(namedtuple('FinalPoint', ['point', 'point_value', 'expected_value', 'surrounding_values'])):
+    __slots__ = ()
+    
+    def __str__(self):
+        return f"Final Point: (x={self.point[0]}, y={self.point[1]}), point value={self.point_value}, expected value={round(self.expected_value, 2)}, surrounding values {list(map(lambda x : round(x, 2), self.surrounding_values))}"
 
 def gradientDescent(dartboard, kernel_size, loops, d=1, display="default", print_kernel=False, debug=False):
     """Takes a dartboard to search, the size of the kernel (K x K) to use and
