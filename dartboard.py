@@ -8,7 +8,8 @@ import random
 from collections import namedtuple
 
 
-"""Represents a dartboard. 2D board array holds the dartboard values at each point.
+"""Representation of a dartboard, including dartboard values. 
+   A 2D numpy array holds the dartboard values at each position.
 """
 class Dartboard:
     def __init__(self, size):
@@ -78,7 +79,7 @@ class Dartboard:
         new_y = self.board.shape[1] - 1 - x
         return (new_x, new_y)
     
-    def graphBoard(self, spacing=10, kernel_size=None, kernel_centres=[]):
+    def graphBoard(self, spacing=5, kernel_size=None, kernel_centres=[]):
         """Displays the dartboard board in the form of a graph.
            Each point in the dartboard is looped through, skipping out the values
            for the given spacing and the integer value held at that point on the 
@@ -134,10 +135,11 @@ class Dartboard:
                 square = plt.Rectangle(top_left, kernel_size, kernel_size, linewidth=2, edgecolor=edge_colour)
                 plt.gca().add_patch(square)
         
-        # Display green dot at exact point of maxima 
-        # plt.plot(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0], 'go')
-        circle = plt.Circle(xy=(kernel_centres[-1][1], 1200 - kernel_centres[-1][0]), radius=4, linewidth=2, edgecolor='w')
-        plt.gca().add_patch(circle)
+        if kernel_size > 20:
+            # Display small green dot at exact point of maxima 
+            # plt.plot(1200 - kernel_centres[-1][1], 1200 - kernel_centres[-1][0], 'go')
+            circle = plt.Circle(xy=(kernel_centres[-1][1], 1200 - kernel_centres[-1][0]), radius=4, linewidth=2, edgecolor='w')
+            plt.gca().add_patch(circle)
         
         # Plot dartboard values
         for i in range(0, self.board.shape[0], spacing):
@@ -161,7 +163,10 @@ class Dartboard:
    of a dartboard that holds integer dartboard values (up to 60).
    The array is created based on image pixel colours and positions. Zeros are
    added to the array at positions in the image where the pixel is outside of the
-   dartboard. 
+   dartboard.
+   This class can currently only generate a dartboard array from the specific
+   photo dartboard.png image in /dartboard_img. I aim to make a more generalised
+   version in future. 
 """
 class GenerateDartboard:
     def __init__(self, url):

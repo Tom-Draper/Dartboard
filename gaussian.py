@@ -7,9 +7,10 @@ class Gaussian():
     
     def __init__(self):
         self.gaussian = None
-
-    def calculateGaussian(self, sigma, mu, size):
-        """Calculates and returns the Gaussian kernel.
+    
+    def calcCirclularGaussian(self, sigma, mu, size):
+        """Calculates and stores a circular Gaussian kernel, with zeros in the
+           corners of the 2D array.
 
         Args:
             sigma (int): the standard deviation of the Gaussian distribution.
@@ -19,14 +20,33 @@ class Gaussian():
         x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
         d = np.sqrt(x*x + y*y)
         self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
+        # Normalise
         self.gaussian = self.gaussian / np.sum(self.gaussian)
+        
+        return self.gaussian
+
+    def calcSquareGaussian(self, sigma, mu, size):
+        """Calculates  the Gaussian kernel.
+
+        Args:
+            sigma (int): the standard deviation of the Gaussian distribution.
+            mu (int): the mean of the Gaussian distribution.
+            size (int): the size of one side of the kernel (size X size).
+        """
+        x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
+        d = np.sqrt(x*x + y*y)
+        self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
+        # Normalise
+        self.gaussian = self.gaussian / np.sum(self.gaussian)
+        
+        return self.gaussian
 
     def printGaussian(self):
         """Prints the values in the gaussian kernel to 2d.p."""
         
         for i in range(len(self.gaussian)):
             for j in range(len(self.gaussian)):
-                print('{:4.2f}'.format(self.gaussian[i][j]), end='')
+                print('{:1.4f}'.format(self.gaussian[i][j]), end='  ')
             print()
                 
     

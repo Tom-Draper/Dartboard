@@ -3,8 +3,15 @@ from collections import namedtuple
 from dartboard import GenerateDartboard
 from gaussian import Gaussian
 
+class FinalPoint(namedtuple('FinalPoint', ['point', 'point_value', 'expected_value', 'surrounding_values'])):
+        __slots__ = ()
+        
+        def __str__(self):
+            return f"Final Point: (x={self.point[0]}, y={self.point[1]}), point value={self.point_value}, expected value={round(self.expected_value, 2)}, surrounding values {list(map(lambda x : round(x, 2), self.surrounding_values))}"
+        
 
-def gradientDescent(dartboard, kernel_size, loops, d=1):
+
+def gradientDescent(dartboard, kernel_size, loops, d=1, display="default", print_kernel=False, debug=False):
     """Takes a dartboard to search, the size of the kernel (K x K) to use and
        the number of loops to repeat the search. The algorithm selects a random 
        point on the dartboard. The gaussian distribution kernel is applied to 
@@ -40,13 +47,15 @@ def gradientDescent(dartboard, kernel_size, loops, d=1):
     # 128 -> drops a couple cm vertically down the board -> 173
     # 173 and above for top of 20
     gaussian = Gaussian()
-    gaussian.calculateGaussian(sigma=1, mu=0, size=kernel_size)
+    gaussian.calcSquareGaussian(sigma=1, mu=0, size=kernel_size)
     
     print(f"Kernel: ({kernel_size}x{kernel_size})")
+    if print_kernel:
+        gaussian.printGaussian()
     
-    Final = namedtuple('Final', 'point point_value expected_value surrounding_values')
+    # Final = namedtuple('Final', 'point point_value expected_value surrounding_values')
     # Default starting final (expected value at minimum)
-    final = Final(point=(len(dartboard), len(dartboard[1])), point_value=0, expected_value=0, surrounding_values=[])
+    final_point = FinalPoint(point=(len(dartboard), len(dartboard[1])), point_value=0, expected_value=0, surrounding_values=[])
     # Stores the path of points taken to reach the current highest peak we've found so far
     final_gradient_descent_path = []
 
@@ -101,12 +110,13 @@ def gradientDescent(dartboard, kernel_size, loops, d=1):
                              up_right_exp_value, up_left_exp_value, down_right_exp_value, down_left_exp_value])
             
             if exp_value >= max_exp_value: # If current point is a local maximum (reached a peak)
-                if (exp_value > final.expected_value):  # If peak we've landed on is higher than any peak we've reached before
+                if (exp_value > final_point.expected_value):  # If peak we've landed on is higher than any peak we've reached before
                     # Update the final value with the improvement
-                    final = Final(point=point, point_value=dartboard[point[0]][point[1]], expected_value=exp_value, surrounding_values=list(value_to_point.keys()))
+                    final_point = FinalPoint(point=point, point_value=dartboard[point[0]][point[1]], expected_value=exp_value, surrounding_values=list(value_to_point.keys()))
                     final_gradient_descent_path = gradient_descent_path
-                    print("LOOP", i, "--> NEW IMPROVED MAXIMA:", final)
-                    print("PATH TAKEN:", final_gradient_descent_path, "\n")
+                    if debug:
+                        print("LOOP", i, "--> NEW IMPROVED MAXIMA:", final_point)
+                        print("PATH TAKEN:", final_gradient_descent_path, "\n")
                 break
             else:
                 # Take the point with the maximum value to use next loop
@@ -114,24 +124,38 @@ def gradientDescent(dartboard, kernel_size, loops, d=1):
                 gradient_descent_path.append(point)
     
     print("-"*40, "\n")
-    print("GLOBAL MAXIMA FOUND:", final, "\nPATH TAKEN:", final_gradient_descent_path, "\n")
-    print("Displaying...")
-    if kernel_size < 50:
-        db.printBoardSection(centre=final.point, r=int(kernel_size/2))
-    db.graphBoard(spacing=10, kernel_size=kernel_size, kernel_centres=final_gradient_descent_path)
+    print("GLOBAL MAXIMA FOUND:", final_point, "\nPATH TAKEN:", final_gradient_descent_path, "\n")
+    
+    if display == "default":
+        # Display a kernel-sized section of the dartboard where the final point 
+        # where the global maxima has been found
+        if kernel_size < 50:
+            print("Displaying to command line...")
+            db.printBoardSection(centre=final_point.point, r=int(kernel_size/2))
+        print("Displaying graph...")
+        db.graphBoard(spacing=10, kernel_size=kernel_size, kernel_centres=final_gradient_descent_path)
+    elif display == "graph":
+        # Display the matplotlib graphed dartboard with kernel overlaying the 
+        # position of the global maxima
+        print("Displaying graph...")
+        db.graphBoard(spacing=10, kernel_size=kernel_size, kernel_centres=final_gradient_descent_path)
+    elif display == "cmdline":
+        print("Displaying to command line...")
+        db.printBoardSection(centre=final_point.point, r=int(kernel_size/2))
 
-    return final
+    return final_point
 
-def gradientDescentOverRange(dartboard, lower, higher, step=1):
-    """Applies the gradient descent algorithm for a range of different kernel sizes.
+def gradientDescentOverRange(dartboard, k_lower, k_higher, loops, step=1, d=1, display="default"):
+    """Applies the gradient descent algorithm for an inclusive range of different
+       kernel sizes.
 
     Args:
-        dartboard (2D int array): Same dimensions as the dartboard image
+        dartboard (2D int array): same dimensions as the dartboard image
                                   to represent the dartboard. Each element holds
                                   the board value found on a dartboard at that location.
-        lower (int): The lower bound of the kernel size to use.
-        higher (int): The upper bound of the kernel size to use.
-        step (int, optional): The step size between lower and higher. Defaults to 1.
+        lower (int): the lower bound of the kernel size to use.
+        higher (int): the upper bound of the kernel size to use (inclusive).
+        step (int, optional): the step size between lower and higher. Defaults to 1.
 
     Returns:
         Dict (key = int, value = named tuple): kernel_size maps to a named tuple 
@@ -139,22 +163,26 @@ def gradientDescentOverRange(dartboard, lower, higher, step=1):
     """
     # Build list of tuples (kernel size, point (x,y), max value) for each kernel size in range
     results = {}
-    for kernel_size in range(lower, higher, step):
-        final = gradientDescent(dartboard, kernel_size, loops=100)
+    for kernel_size in range(k_lower, k_higher+1, step):
+        final = gradientDescent(dartboard, kernel_size, loops, d=d, display=display)
         results[kernel_size] = final
     
-    print(results)
+    print("\nRESULTS:")
+    for kernel_size, result in results.items():
+        print(f"Kernel size={kernel_size} --> {result}")
     return results
 
 
 board = GenerateDartboard('dartboard_img/dartboard.png')
 
+# Get board
 #db = board.generate()
 db = board.load('dartboard.npy')
 
+# Perform Gradient Descent
 # Triple 20
 # gradientDescent(db.board, kernel_size=126, loops=1000, d=5)
 # Triple 19
 # gradientDescent(db.board, kernel_size=127, loops=1000, d=5)
-gradientDescent(db.board, kernel_size=100, loops=500, d=5)
-#gradientDescentOverRange(db.board, lower=10, higher=20, step=2)
+gradientDescent(db.board, kernel_size=50, loops=500, d=5)
+# gradientDescentOverRange(db.board, k_lower=120, k_higher=150, loops=500, step=1, display="none")
