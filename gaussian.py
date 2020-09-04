@@ -8,7 +8,11 @@ class Gaussian():
     def __init__(self):
         self.gaussian = None
     
-    def calcCirclularGaussian(self, sigma, mu, size):
+    def calcCircularMask(self, size):
+        mask = np.ones((size, size), dtype=int)
+        print(mask)
+    
+    def calcCircularGaussian(self, sigma, mu, size):
         """Calculates and stores a circular Gaussian kernel, with zeros in the
            corners of the 2D array.
 
@@ -20,6 +24,7 @@ class Gaussian():
         x, y = np.meshgrid(np.linspace(-1,1,size), np.linspace(-1,1,size))
         d = np.sqrt(x*x + y*y)
         self.gaussian = np.exp(-((d-mu)**2 / (2.0 * sigma**2)))
+        circlular_mask = self.calcCircularMask(size)
         # Normalise
         self.gaussian = self.gaussian / np.sum(self.gaussian)
         
