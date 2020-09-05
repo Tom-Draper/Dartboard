@@ -14,7 +14,7 @@ I then built the circular, normalised 2D kernel array to apply to the dartboard 
 
 Now I had the dartboard and can apply the kernel to any point to get its expected value, I used a gradient descent algorithm to find a global maxima. The algorithm applies the kernel to a random point to get the expected value of that point, and then again to each nearby point around it. The nearby point with the highest expected value is taken and the nearby points are tested again. This continues until the algorithm reaches a point where no points nearby have a higher expected value than the current point. This point is a local maxima. Each point on the dartboard has its own local maxima that it travels to. The program repeats running gradient descent on different points within the dartboard and records the best local maxima value found so far until it is confident it has found the global maxima on the dartboard. This is the optimal point to aim for on the dartboard given the standard deviation of the kernel.
 
-Throughout this program, I have make the assumption that distribution of darts thrown follows a perfect 2D Gaussian distribution with the centre the point the player was aiming for. The accuracy/experience of a player would therefore increase or decrease the standard deviation of this distribution.
+Throughout this program, I have make the assumption that distribution of darts thrown follows a perfect 2D Gaussian distribution with the centre the point the player was aiming for. In reality, the distribution would most likely be eliptical running either vertically or horizontally, depending on the player's throw style. The accuracy/experience of a player would therefore increase or decrease the standard deviation of this distribution.
 
 ## Results
 
