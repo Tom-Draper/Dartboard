@@ -19,7 +19,7 @@ Throughout this program, I have make the assumption that distribution of darts t
 ## Results
 
 The following results show the highest expected value (global maxima) found given a kernel size. It shows the path taken by the gradient descent to reach that maxima. For each of these results, d (the distance away from current point to test the expected value of nearby points) is 5.   
-As shown down below, kernel sizes of 217 and above moved the optimal position from around the triple 20 to near the triple 19. 
+As shown down below, kernel sizes up to 216 give a maxima centered on or near the triple 20 position. Kernel sizes of 217 and above moved the optimal position to aim to near the triple 19. A kernel size of 250 gave an optimal position at the triple 7 position, most likely because it is nearby both the triple 19 and triple 16 and the kernel is large enough to take advantage of both of these values.
 
 ### Kernel = (50x50)
 ![50-kernel](https://user-images.githubusercontent.com/41476809/92283084-01a2ca00-eef7-11ea-9e5b-a5abdedc3af7.png)
