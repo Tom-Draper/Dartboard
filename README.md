@@ -21,37 +21,31 @@ Throughout this program, I have make the assumption that distribution of darts t
 ## Results
 
 The following results show the highest expected value (global maxima) found given a kernel size. It shows the path taken by the gradient descent to reach that maxima. For each of these results, d (the distance away from current point to test the expected value of nearby points) is 5.   
-As shown down below, kernel sizes up to 216 give a maxima centered on or near the triple 20 position. Kernel sizes of 217 and above moved the optimal position to aim to near the triple 19. A kernel size of 250 gave an optimal position at the triple 7 position, most likely because it is nearby both the triple 19 and triple 16 and the kernel is large enough to take advantage of both of these values.
+As shown down below, kernel sizes up to 296 give a maxima centered on or near the triple 20 position. Kernel sizes of 297 and above moved the optimal position to aim to near the triple 19.
 
 ### Kernel = (50x50)
-![50-kernel](https://user-images.githubusercontent.com/41476809/92283084-01a2ca00-eef7-11ea-9e5b-a5abdedc3af7.png)
+![50-kernel](https://user-images.githubusercontent.com/41476809/92312059-35442980-efb5-11ea-9a15-bb23715bfb27.png)
 
 ### Kernel = (75x75)
-![75-kernel](https://user-images.githubusercontent.com/41476809/92283296-82fa5c80-eef7-11ea-9e5c-22810f526c00.png)
+![75-kernel](https://user-images.githubusercontent.com/41476809/92312093-8f44ef00-efb5-11ea-838f-0c870ff4d293.png)
 
 ### Kernel = (100x100)
-![100-kernel](https://user-images.githubusercontent.com/41476809/92283425-c2c14400-eef7-11ea-88c8-db46293c7839.png)
+![100-kernel](https://user-images.githubusercontent.com/41476809/92312130-d59a4e00-efb5-11ea-8fa3-d04b5de215f0.png)
 
 ### Kernel = (150x150)
-![150-kernel](https://user-images.githubusercontent.com/41476809/92283594-1e8bcd00-eef8-11ea-89db-5f0660b090c3.png)
+![150-kernel](https://user-images.githubusercontent.com/41476809/92312155-11cdae80-efb6-11ea-89b1-10066f0f8d1e.png)
 
 ### Kernel = (200x200)
-![200-kernel](https://user-images.githubusercontent.com/41476809/92284640-4ed46b00-eefa-11ea-9e7a-4fa2518f48b2.png)
-
-### Kernel = (210x210)
-![210-kernel](https://user-images.githubusercontent.com/41476809/92284743-9b1fab00-eefa-11ea-8820-a8ad91fd0e7c.png)
-
-### Kernel = (215x215)
-![215-kernel](https://user-images.githubusercontent.com/41476809/92284848-dd48ec80-eefa-11ea-8f08-98cde4a6ec79.png)
-
-### Kernel = (216x216)
-![216-kernel](https://user-images.githubusercontent.com/41476809/92285074-52b4bd00-eefb-11ea-8f4f-99cb77a7188b.png)
-
-### Kernel = (217x217)
-![217-kernel](https://user-images.githubusercontent.com/41476809/92285351-fb631c80-eefb-11ea-80bb-b755bc8bc7cf.png)
-
-### Kernel = (218x218)
-![218-kernel](https://user-images.githubusercontent.com/41476809/92285533-7593a100-eefc-11ea-87fc-79108da919ce.png)
+![200-kernel](https://user-images.githubusercontent.com/41476809/92312198-7db01700-efb6-11ea-892e-8fd199ad2c2b.png)
 
 ### Kernel = (250x250)
-![250-kernel](https://user-images.githubusercontent.com/41476809/92285677-cf946680-eefc-11ea-9d50-a46b4ed432e0.png)
+![250-kernel](https://user-images.githubusercontent.com/41476809/92312255-ea2b1600-efb6-11ea-87ed-3566933d23fc.png)
+
+### Kernel = (290x290)
+![290-kernel](https://user-images.githubusercontent.com/41476809/92312394-ffed0b00-efb7-11ea-917e-0d0f4a5e90c7.png)
+
+### Kernel = (296x296)
+![296-kernel](https://user-images.githubusercontent.com/41476809/92312493-f021f680-efb8-11ea-9526-89e8fa7c4ec5.png)
+
+### Kernel = (297x297)
+![297-kernel](https://user-images.githubusercontent.com/41476809/92312528-6292d680-efb9-11ea-8378-6459e96be82d.png)
