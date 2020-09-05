@@ -150,7 +150,7 @@ class Dartboard:
         plt.ylim([100, 1100])
         plt.axis('off')
         plt.tight_layout(pad=0)
-        plt.annotate(f'Kernel size= {kernel_size}', xy=(150, 1050), size=20)
+        plt.annotate(f'Kernel size = {kernel_size}', xy=(150, 1050), size=20)
         plt.savefig("maxima.png", bbox_inches='tight')
         plt.show()
 

@@ -48,7 +48,7 @@ class GradientDescent:
         # 128 -> drops a couple cm vertically down the board -> 173
         # 173 and above for top of 20
         gaussian = Gaussian()
-        gaussian.calcCircularGaussian(sigma=1, mu=0, size=kernel_size)
+        gaussian.calcCircularGaussian(sigma=0.3, mu=0, size=kernel_size)
         
         print(f"Kernel: ({kernel_size}x{kernel_size})")
         if print_kernel:
@@ -187,5 +187,5 @@ if __name__ == "__main__":
     # algorithm.run(db.board, kernel_size=126, loops=1000, d=5)
     # Triple 19
     # algorithm.run(db.board, kernel_size=127, loops=1000, d=5)
-    #algorithm.run(db.board, kernel_size=20, loops=500, d=5)
-    algorithm.runOverRange(db.board, k_lower=130, k_higher=140, loops=500, step=1, display="none")
+    algorithm.run(db.board, kernel_size=297, loops=1000, d=5)
+    # algorithm.runOverRange(db.board, k_lower=150, k_higher=160, loops=500, step=1, display="none")

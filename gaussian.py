@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
 """Holds the functions to generate and apply 2D Gaussian kernel to a section of
    a dartboard numpy array.
@@ -71,6 +73,32 @@ class Gaussian():
             for j in range(len(self.gaussian)):
                 print('{:1.4f}'.format(self.gaussian[i][j]), end='  ')
             print()
+    
+    def graphGaussian(self):
+        x=np.linspace(-self.gaussian.shape[0]/2, self.gaussian.shape[0]/2, 
+                      num=self.gaussian.shape[0])
+        y=np.linspace(-self.gaussian.shape[1]/2, self.gaussian.shape[1]/2, 
+                      num=self.gaussian.shape[1])
+
+        x, y = np.meshgrid(x, y)
+
+        z = self.gaussian
+        
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.plot_surface(x,y,z, cmap=cm.jet)
+        plt.show()
+        
+        
+        # print(self.gaussian)
+        # x, y = np.meshgrid(*self.gaussian)
+        
+        # z = np.exp(-0.1*x**2-0.1*y**2)
+
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111, projection='3d')
+        # ax.plot_wireframe(x,y,z, cmap=cm.jet)
+        # plt.show()
                 
     
     def applyGaussian(self, dartboard, point):
