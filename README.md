@@ -32,6 +32,8 @@ This means for a 50x50 kernel, 1 standard deviation would have a width of 0.3 * 
 
 Formula: s.d. used for kernel (0.3 hard-coded) * kernel size in pixels * 2 (to give diameter) * length of one pixel in mm (found to be 0.373894)
 
+### To Measure Your Own Standard Deviation
+
 68% of darts should land within one standard deviation of the mean. To find the standard deviation of your throw:
 - Choose a position on the dartboard to aim at (this will be the mean position)
 - Create a sheet of paper that is large enough to stick to the front of the dartboard, with a layer of strong tape (e.g. electrical tape) covering the paper
