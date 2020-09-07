@@ -23,29 +23,54 @@ Throughout this program, I have make the assumption that distribution of darts t
 The following results show the highest expected value (global maxima) found given a kernel size. It shows the path taken by the gradient descent to reach that maxima. For each of these results, d (the distance away from current point to test the expected value of nearby points) is 5.   
 As shown down below, kernel sizes up to 296 give a maxima centered on or near the triple 20 position. Kernel sizes of 297 and above moved the optimal position to aim to near the triple 19.
 
+### Converting kernel size in pixels --> standard deviation of a player's throw in mm
+
+For these results to be useful, we need to be able to convert a particular kernel size to a players accuracy and vice versa. Doing this will allow a player to record the standard deviation of x amount of throws, and select the equivalent kernel size. Running the algorithm with the given kernel size will give them the optimum location for that specific player to aim for.    
+Kernel sizes are described in the form of the the number of elements (dartboard values) they cover (e.g. 50x50). When creating the gaussian kernel, I experimented with different values of sigma (standard deviation) until the entire Gaussian distribution could fit on the kernel whilst being as large as possible (as shown in the above image). The standard deviation value I used was 0.3. This means a central ring (of radius 0.3 * the kernel size) contains all points within 1 standard deviation of the mean.   
+Now to find the length of one pixel in mm. I measured the width of the inner dartboard ring that contains dartboard values to be 338mm +- 1mm. The dartboard image used was 1200x1200 pixels, but the width of the area that contains dartboard values is 904 pixels. Therefore each pixel must be 338/904 = 0.373894mm in length (6 d.p.).    
+This means for a 50x50 kernel, 1 standard deviation would have a width of 0.3 * 50 * 2 = 30 pixels, which is equivalent to 30 * 0.373894 = 11.22mm (2 d.p.).
+
+Formula: s.d. used for kernel (0.3 hard-coded) * kernel size in pixels * 2 (to give diameter) * length of one pixel in mm (found to be 0.373894)
+
+68% of darts should land within one standard deviation of the mean. To find the standard deviation of your throw:
+- Choose a position on the dartboard to aim at (this will be the mean position)
+- Create a sheet of paper that is large enough to stick to the front of the dartboard, with a layer of strong tape (e.g. electrical tape) covering the paper
+- Stick this material to the front of the dartboard and create a recognisable hole for the mean position you're going to aim for
+- Throw 100 darts at that position
+- Count the outer most 32 dart holes and measure the distance in mm from the mean position (point you were aiming at) to the 32nd outermost dart hole. This is your standard deviation.
+
 ### Kernel = (50x50)
+Player's dart throw has 11.2mm standard deviation.
 ![50-kernel](https://user-images.githubusercontent.com/41476809/92312059-35442980-efb5-11ea-9a15-bb23715bfb27.png)
 
 ### Kernel = (75x75)
+Player dart throw has 16.83mm standard deviation. 
 ![75-kernel](https://user-images.githubusercontent.com/41476809/92312093-8f44ef00-efb5-11ea-838f-0c870ff4d293.png)
 
 ### Kernel = (100x100)
+Player dart throw has 22.43mm standard deviation. 
 ![100-kernel](https://user-images.githubusercontent.com/41476809/92312130-d59a4e00-efb5-11ea-8fa3-d04b5de215f0.png)
 
 ### Kernel = (150x150)
+Player dart throw has 33.65mm standard deviation. 
 ![150-kernel](https://user-images.githubusercontent.com/41476809/92312155-11cdae80-efb6-11ea-89b1-10066f0f8d1e.png)
 
 ### Kernel = (200x200)
+Player dart throw has 44.87mm standard deviation. 
 ![200-kernel](https://user-images.githubusercontent.com/41476809/92312198-7db01700-efb6-11ea-892e-8fd199ad2c2b.png)
 
 ### Kernel = (250x250)
+Player dart throw has 56.08mm standard deviation. 
 ![250-kernel](https://user-images.githubusercontent.com/41476809/92312255-ea2b1600-efb6-11ea-87ed-3566933d23fc.png)
 
 ### Kernel = (290x290)
+Player dart throw has 65.06mm standard deviation. 
 ![290-kernel](https://user-images.githubusercontent.com/41476809/92312394-ffed0b00-efb7-11ea-917e-0d0f4a5e90c7.png)
 
 ### Kernel = (296x296)
+Player dart throw has 66.40mm standard deviation. 
 ![296-kernel](https://user-images.githubusercontent.com/41476809/92312493-f021f680-efb8-11ea-9526-89e8fa7c4ec5.png)
 
 ### Kernel = (297x297)
+Player dart throw has 66.63mm standard deviation. 
 ![297-kernel](https://user-images.githubusercontent.com/41476809/92312528-6292d680-efb9-11ea-8378-6459e96be82d.png)
