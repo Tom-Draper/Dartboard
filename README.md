@@ -40,37 +40,37 @@ Formula: s.d. used for kernel (0.3 hard-coded) * kernel size in pixels * 2 (to g
 - Count the outer most 32 dart holes and measure the distance in mm from the mean position (point you were aiming at) to the 32nd outermost dart hole. This is your standard deviation.
 
 ### Kernel = (50x50)
-Player's dart throw has 11.2mm standard deviation.
+Player's dart throw has a standard deviation of 11.2m.
 ![50-kernel](https://user-images.githubusercontent.com/41476809/92312059-35442980-efb5-11ea-9a15-bb23715bfb27.png)
 
 ### Kernel = (75x75)
-Player dart throw has 16.83mm standard deviation. 
+Player's's dart throw has a standard deviation of 16.83mm.
 ![75-kernel](https://user-images.githubusercontent.com/41476809/92312093-8f44ef00-efb5-11ea-838f-0c870ff4d293.png)
 
 ### Kernel = (100x100)
-Player dart throw has 22.43mm standard deviation. 
+Player's dart throw has a standard deviation of 22.43mm.
 ![100-kernel](https://user-images.githubusercontent.com/41476809/92312130-d59a4e00-efb5-11ea-8fa3-d04b5de215f0.png)
 
 ### Kernel = (150x150)
-Player dart throw has 33.65mm standard deviation. 
+Player's dart throw has a standard deviation of 33.65mm.
 ![150-kernel](https://user-images.githubusercontent.com/41476809/92312155-11cdae80-efb6-11ea-89b1-10066f0f8d1e.png)
 
 ### Kernel = (200x200)
-Player dart throw has 44.87mm standard deviation. 
+Player's dart throw has a standard deviation of 44.87mm.
 ![200-kernel](https://user-images.githubusercontent.com/41476809/92312198-7db01700-efb6-11ea-892e-8fd199ad2c2b.png)
 
 ### Kernel = (250x250)
-Player dart throw has 56.08mm standard deviation. 
+Player's dart throw has a standard deviation of 56.08mm.
 ![250-kernel](https://user-images.githubusercontent.com/41476809/92312255-ea2b1600-efb6-11ea-87ed-3566933d23fc.png)
 
 ### Kernel = (290x290)
-Player dart throw has 65.06mm standard deviation. 
+Player's dart throw has a standard deviation of 65.06mm.
 ![290-kernel](https://user-images.githubusercontent.com/41476809/92312394-ffed0b00-efb7-11ea-917e-0d0f4a5e90c7.png)
 
 ### Kernel = (296x296)
-Player dart throw has 66.40mm standard deviation. 
+Player's dart throw has a standard deviation of 66.40mm.
 ![296-kernel](https://user-images.githubusercontent.com/41476809/92312493-f021f680-efb8-11ea-9526-89e8fa7c4ec5.png)
 
 ### Kernel = (297x297)
-Player dart throw has 66.63mm standard deviation. 
+Player's dart throw has a standard deviation of 66.63mm.
 ![297-kernel](https://user-images.githubusercontent.com/41476809/92312528-6292d680-efb9-11ea-8378-6459e96be82d.png)
